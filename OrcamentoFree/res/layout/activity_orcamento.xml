@@ -4,8 +4,8 @@
     android:layout_height="match_parent" >
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
         <TableRow>
 
@@ -63,23 +63,14 @@
 
             <Button
                 android:id="@+id/btn_orcamento_delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_orcamento_delete" />
 
             <Button
                 android:id="@+id/btn_orcamento_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_orcamento_save" />
 
             <Button
                 android:id="@+id/btn_orcamento_cancel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_orcamento_cancel" />
         </TableRow>
     </TableLayout>
