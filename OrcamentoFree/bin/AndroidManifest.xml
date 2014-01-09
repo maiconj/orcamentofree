@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.orcamentofree.OrcamentoActivity"
+            android:label="@string/title_activity_orcamento" >
+        </activity>
+        <activity
+            android:name="com.orcamentofree.ProdutoActivity"
+            android:label="@string/title_activity_produto" >
+        </activity>
     </application>
 
 </manifest>

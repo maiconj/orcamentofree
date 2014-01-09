@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_orcamento_descricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txt_orcamento_descricao"
+                android:inputType="text"
+                android:maxLength="25" >
+
+                <requestFocus />
+            </EditText>
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_orcamento_loja"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txt_orcamento_loja"
+                android:inputType="text"
+                android:maxLength="25" />
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_orcamento_endereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txt_orcamento_endereco"
+                android:inputType="text"
+                android:maxLength="25" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_produto_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_add" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_orcamento_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_orcamento_delete" />
+
+            <Button
+                android:id="@+id/btn_orcamento_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_orcamento_save" />
+
+            <Button
+                android:id="@+id/btn_orcamento_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_orcamento_cancel" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_produto_descricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txt_produto_descricao"
+                android:inputType="text"
+                android:maxLength="25" >
+
+                <requestFocus />
+            </EditText>
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_produto_codigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/txt_produto_codigo"
+                android:inputType="text"
+                android:maxLength="25" >
+            </EditText>
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_produto_qtd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="7"
+                android:hint="@string/txt_produto_qtd"
+                android:inputType="numberDecimal"
+                android:maxLength="25" />
+
+            <EditText
+                android:id="@+id/txt_produto_preco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="4"
+                android:hint="@string/txt_produto_preco"
+                android:inputType="numberDecimal"
+                android:maxLength="25" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_produto_foto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_foto" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_produto_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_cancel" />
+
+            <Button
+                android:id="@+id/btn_produto_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_save" />
+
+            <Button
+                android:id="@+id/btn_produto_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_delete" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>
