@@ -61,11 +61,7 @@
 
         <TableRow>
 
-            <Button
-              android:id="@+id/btn_orcamento_delete"
-                android:text="@string/btn_orcamento_delete" />
-
-            <Button
+           <Button
                 android:id="@+id/btn_orcamento_save"
                 android:layout_width="0dp"
                 android:layout_weight="1"
