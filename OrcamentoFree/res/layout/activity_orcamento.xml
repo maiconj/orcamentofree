@@ -6,7 +6,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
- 
+
         <TableRow>
 
             <EditText
@@ -60,6 +60,10 @@
         </TableRow>
 
         <TableRow>
+
+            <Button
+              android:id="@+id/btn_orcamento_delete"
+                android:text="@string/btn_orcamento_delete" />
 
             <Button
                 android:id="@+id/btn_orcamento_save"
