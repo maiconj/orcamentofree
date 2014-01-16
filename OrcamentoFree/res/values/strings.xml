@@ -4,7 +4,7 @@
     <string name="app_name">OrçamentoFacil</string>
     <string name="action_settings">Settings</string>
 
-<!--     ORCAMENTO -->
+    <!-- ORCAMENTO -->
     <string name="title_activity_orcamento">Orcamento</string>
     <string name="btn_orcamento_add">Novo Orçamento</string>
     <string name="btn_orcamento_save">Salvar</string>
@@ -18,7 +18,7 @@
     <string name="popup_valida_orcamento_message">Campos obrigatórios NÂO preenchidos</string>
     <string name="popup_valida_orcamento_btn">Fechar</string>
 
-<!--     PRODUTO -->
+    <!-- PRODUTO -->
     <string name="title_activity_produto">Produto</string>
     <string name="txt_produto_descricao">Descrição</string>
     <string name="txt_produto_codigo">Código</string>
@@ -28,8 +28,7 @@
     <string name="btn_produto_save">Salvar</string>
     <string name="btn_produto_delete">Excluir</string>
     <string name="btn_produto_cancel">Cancelar</string>
-
-    
-    
+    <string name="title_activity_intro">IntroActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
