@@ -2,30 +2,34 @@ package com.orcamentofree.pojo;
 
 public class Orcamento {
 
-	private int id;
+	private int _id;
 	private String descricao;
 	private String loja;
 	private String data;
 	private String endereco;
+	public static String[] colunas = new String[] { "_id", "descricao", "loja",
+			"data_hora", "endereco" };
 
 	public Orcamento() {
 	}
 
-	public Orcamento(int id, String descricao, String loja, String endereco, String data) {
+	public Orcamento(int id, String descricao, String loja, String endereco,
+			String data) {
 		super();
-		this.setId(id);
+		this.set_id(id);
 		this.setDescricao(descricao);
 		this.setLoja(loja);
 		this.setData(data);
 		this.setEndereco(endereco);
 	}
 
-	public Orcamento(String id, String descricao, String loja, String data, String endereco) {
+	public Orcamento(String id, String descricao, String loja, String data,
+			String endereco) {
 		super();
-		if (id == null || id.isEmpty()) {
-			this.setId(Integer.valueOf(0));
+		if (id == null) {
+			this.set_id(Integer.valueOf(0));
 		} else {
-			this.setId(Integer.valueOf(id));
+			this.set_id(Integer.valueOf(id));
 		}
 		this.setDescricao(descricao);
 		this.setLoja(loja);
@@ -41,12 +45,12 @@ public class Orcamento {
 		this.setEndereco(endereco);
 	}
 
-	public int getId() {
-		return id;
+	public int get_id() {
+		return _id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void set_id(int _id) {
+		this._id = _id;
 	}
 
 	public String getDescricao() {

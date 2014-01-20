@@ -1,16 +1,21 @@
 package com.orcamentofree;
 
 //import com.orcamentofree.base.OrcamentoDataBaseHelper;
-import com.orcamentofree.pojo.Orcamento;
-import com.orcamentofree.utils.DateUtils;
+import java.util.ArrayList;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.orcamentofree.base.OrcamentoFreeDao;
+import com.orcamentofree.pojo.Orcamento;
+import com.orcamentofree.utils.DateUtils;
 
 public class OrcamentoActivity extends Activity {
 
@@ -26,27 +31,31 @@ public class OrcamentoActivity extends Activity {
 	private Orcamento orcamento;
 	private DateUtils dateUtils;
 
-//	private OrcamentoDataBaseHelper dbHelp = null;
+	private OrcamentoFreeDao dbHelp = null;
 	private Intent i;
+	private static final String LOG = "DESENV";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_orcamento);
-		carregaComponentes();
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_orcamento);
+			carregaComponentes();
 
-		/** Ação do botão 'Adiconar Produto' **/
-		btnProdutoAddAction();
+			/** Ação do botão 'Adiconar Produto' **/
+			btnProdutoAddAction();
 
-		/** Ação do botão 'Salvar Orcamento' **/
-		btnOrcamentoSaveAction();
+			/** Ação do botão 'Salvar Orcamento' **/
+			btnOrcamentoSaveAction();
 
-		/** Ação do botão 'Excluir Orcamento' **/
-		btnOrcamentoDeleteAction();
+			/** Ação do botão 'Excluir Orcamento' **/
+			btnOrcamentoDeleteAction();
 
-		/** Ação do botão 'Cancelar Orcamento' **/
-		btnOrcamentoCancelAction();
-
+			/** Ação do botão 'Cancelar Orcamento' **/
+			btnOrcamentoCancelAction();		
+		} catch (Exception e) {
+			Log.e(LOG,"ERROR - DESENV: ----"+e.getMessage());
+		}
 	}
 
 	private void btnOrcamentoCancelAction() {
@@ -61,7 +70,7 @@ public class OrcamentoActivity extends Activity {
 	private void btnOrcamentoDeleteAction() {
 		btnOrcamentoDelete.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-	//			deleteOrcamento(orcamento, dbHelp);
+				deleteOrcamento();
 			}
 		});
 	}
@@ -70,7 +79,7 @@ public class OrcamentoActivity extends Activity {
 		btnOrcamentoSave.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (camposValidos()) {
-		//			saveOrcamento(dbHelp);
+					saveOrcamento();
 				}
 			}
 
@@ -87,7 +96,7 @@ public class OrcamentoActivity extends Activity {
 	}
 
 	private void carregaComponentes() {
-		//dbHelp = new OrcamentoDataBaseHelper(getApplicationContext());
+		dbHelp = new OrcamentoFreeDao(getApplicationContext());
 
 		this.btnProdutoAdd = (Button) findViewById(R.id.btn_produto_add);
 		this.btnOrcamentoSave = (Button) findViewById(R.id.btn_orcamento_save);
@@ -100,33 +109,49 @@ public class OrcamentoActivity extends Activity {
 
 		this.dateUtils = new DateUtils();
 		this.i = new Intent(this, ProdutoActivity.class);
+
+		//TODO
+//		if (itent != null) {
+//			this.orcamento = id.listview;
+//		}else {this.orcamento = new Orcamento();}
+		this.orcamento = new Orcamento();
 	}
 
-	//private void saveOrcamento(OrcamentoDataBaseHelper dbHelp) {
-//		try {
-//			ContentValues values = new ContentValues();
-//			values.put("orcamento_descricao",  this.txtOrcamentoDescricao.getText().toString());
-//			values.put("orcamento_loja",  this.txtOrcamentoLoja.getText().toString());
-//			values.put("orcamento_endereco",  this.txtOrcamentoEndereco.getText().toString());
-//			values.put("orcamento_data",  this.dateUtils.getNewDate().toString());
-//			this.dbHelp.orcamentoSave(values);
-//			Cursor c = this.dbHelp.orcamentoListAll();
-//			c.getCount();
-//		} catch (Exception e) {
-//			e.getMessage();
-//		}
-		//finish();
-	//}
+	private void saveOrcamento() {
+		try {
+			
+		this.orcamento = new Orcamento(this.txtOrcamentoDescricao.getText().toString(), 
+				this.txtOrcamentoLoja.getText().toString(), 
+				this.dateUtils.getNewDate().toString(), 
+				this.txtOrcamentoEndereco.getText().toString());
+			this.orcamento = dbHelp.findOrcamentoById(this.dbHelp.saveOrcamento(this.orcamento));
+			imprimeOrcamentos();			
+		} catch (Exception e) {
+			Log.e(LOG,e.getMessage());
+		}
+		Toast.makeText(this, "Orcamento Salvo com Sucesso",	Toast.LENGTH_LONG).show();
+	}
 
-//	private void deleteOrcamento(Orcamento orc, OrcamentoDataBaseHelper dbHelp) {
-//		try {
-//			this.dbHelp.orcamentoDelete();
-//			// this.orcamentoDao.delete(orc,dbHelp);
-//		} catch (Exception e) {
-//			e.getMessage();
-//		}
-//		finish();
-	//}
+	private void deleteOrcamento() {
+		try {
+			if (this.orcamento.get_id() >= 1) {
+				this.dbHelp.deleteOrcamentoById(this.orcamento.get_id());
+				this.orcamento = new Orcamento();
+				Toast.makeText(this, "Orcamento deletado com sucesso!",	Toast.LENGTH_LONG).show();
+				limpaCampos();
+			} else {
+				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			Log.e(LOG,e.getMessage());
+		}
+	}
+
+	private void limpaCampos() {
+		this.txtOrcamentoDescricao.setText("");
+		this.txtOrcamentoLoja.setText("");
+		this.txtOrcamentoEndereco.setText("");
+	}
 
 	private void cancelOrcamento() {
 		finish();
@@ -134,14 +159,28 @@ public class OrcamentoActivity extends Activity {
 
 	public boolean camposValidos() {
 		boolean erro = true;
-		if (this.txtOrcamentoDescricao.getText().toString().isEmpty()
-				|| this.txtOrcamentoLoja.getText().toString().isEmpty()
-				|| this.txtOrcamentoLoja.getText().toString().isEmpty()) {
+		if (this.txtOrcamentoDescricao.getText().toString().length()<=0 
+				|| this.txtOrcamentoLoja.getText().toString().length()<=0
+				|| this.txtOrcamentoLoja.getText().toString().length()<=0) {
+			Toast.makeText(this, "Operação cancelada, preencha os campos!",	Toast.LENGTH_LONG).show();
 			erro = false;
 		}
 		return erro;
 	}
 
+	private void imprimeOrcamentos(){
+		ArrayList<Orcamento> orcamentoLst = (ArrayList<Orcamento>) this.dbHelp.findOrcamento();
+		Log.e(LOG,"numero orcamentos salvos: " + orcamentoLst.size());
+		for (Orcamento orc : orcamentoLst) {
+			Log.e(LOG," - _id: "+ orc.get_id());
+			Log.e(LOG," - descricao: "+ orc.getDescricao());
+			Log.e(LOG," - loja: "+ orc.getLoja());
+			Log.e(LOG," - data: "+ orc.getData());
+			Log.e(LOG," - endereco: "+ orc.getEndereco());
+			Log.e(LOG,"----------------------");
+		}
+	}
+	
 	
 	 @Override
 	 public boolean onCreateOptionsMenu(Menu menu) {
