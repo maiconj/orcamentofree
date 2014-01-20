@@ -28,6 +28,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 							        + " id_orcamento integer not null, "
 							        + " FOREIGN KEY(id_orcamento) REFERENCES orcamento(_id)); "};
 
+	
 
 	public SQLiteHelper(Context context) {
 		super(context, NOMEBANCO, null, versao);
