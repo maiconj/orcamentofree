@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/orcamento_descricao"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold" >
+<!--         android:text="DESCRICAO"> -->
+    </TextView>
+
+    <TextView
+        android:id="@+id/orcamento_loja"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+<!--         android:text="LOJA" > -->
+    </TextView>
+
+    <TextView
+        android:id="@+id/orcamento_endereco"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+<!--         android:text="ENDERECO" > -->
+    </TextView>
+
+    <TextView
+        android:id="@+id/orcamento_data"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+<!--         android:text="16:50" > -->
+    </TextView>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#FF909090" />
+
+</LinearLayout>
