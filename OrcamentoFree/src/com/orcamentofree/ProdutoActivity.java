@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,6 +13,10 @@ public class ProdutoActivity extends Activity {
 	private Button btnSaveProduto;
 	private Button btnDeleteProduto;
 	private Button btnCancelProduto;
+	private static final String LOG = "DESENV";
+	private static final int MENU_SAVE_PRODUTO = 1;
+	private static final int MENU_CANCEL_PRODUTO = 2;
+	private static final int MENU_DELETE_PRODUTO = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +84,36 @@ public class ProdutoActivity extends Activity {
 		finish();
 	}
 
-	 @Override
-	 public boolean onCreateOptionsMenu(Menu menu) {
-	 // Inflate the menu; this adds items to the action bar if it is present.
-	 getMenuInflater().inflate(R.menu.produto, menu);
-	 return true;
-	 }
+//	 @Override
+//	 public boolean onCreateOptionsMenu(Menu menu) {
+//	 getMenuInflater().inflate(R.menu.produto, menu);
+//	 return true;
+//	 }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuItem item = menu.add(0, MENU_SAVE_PRODUTO, 0, "Salvar");
+		item = menu.add(0, MENU_CANCEL_PRODUTO, 0, "Cancelar");
+		item = menu.add(0, MENU_DELETE_PRODUTO, 0, "Excluir");
+		return true;
+	}
 
-
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_SAVE_PRODUTO:
+			Log.w(LOG, "Aciondo botão de salvar produto.");
+			saveProduto();
+			return true;
+		case MENU_CANCEL_PRODUTO:
+			finish();
+			return true;
+		case MENU_DELETE_PRODUTO:
+			Log.w(LOG, "Aciondo botão de excluir produto.");
+			deleteProduto();
+			return true;
+		}
+		return false;
+	}	
 }

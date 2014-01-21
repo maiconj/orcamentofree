@@ -1,9 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menu_add_orcamento"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/menu_add_orcamento"
+        android:onClick="menuAddOrcamento"/>
+
+    <item
+        android:id="@+id/menu_sair_orcamento"
+        android:orderInCategory="100"
+        android:title="@string/menu_sair_orcamento"
+        android:onClick="menuSair"/>
 
 </menu>

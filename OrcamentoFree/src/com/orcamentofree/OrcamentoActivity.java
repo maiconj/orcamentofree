@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +35,9 @@ public class OrcamentoActivity extends Activity {
 	private OrcamentoFreeDao dbHelp = null;
 	private Intent i;
 	private static final String LOG = "DESENV";
+	private static final int MENU_SAVE_ORCAMENTO = 1;
+	private static final int MENU_CANCEL_ORCAMENTO = 2;
+	private static final int MENU_DELETE_ORCAMENTO = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +140,6 @@ public class OrcamentoActivity extends Activity {
 				newOrcamento();
 			}
 			this.orcamento = dbHelp.findOrcamentoById(this.dbHelp.saveOrcamento(this.orcamento));
-			// TODO
-			imprimeOrcamentos();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
@@ -202,6 +204,7 @@ public class OrcamentoActivity extends Activity {
 		return erro;
 	}
 
+	//TODO
 	private void imprimeOrcamentos(){
 		ArrayList<Orcamento> orcamentoLst = (ArrayList<Orcamento>) this.dbHelp.findOrcamento();
 		Log.e(LOG,"numero orcamentos salvos: " + orcamentoLst.size());
@@ -215,14 +218,38 @@ public class OrcamentoActivity extends Activity {
 		}
 	}
 	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.orcamento, menu);
+//		return true;
+//	}
 	
 	
-	
-	 @Override
-	 public boolean onCreateOptionsMenu(Menu menu) {
-	 // Inflate the menu; this adds items to the action bar if it is present.
-	 getMenuInflater().inflate(R.menu.orcamento, menu);
-	 return true;
-	 }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuItem item = menu.add(0, MENU_SAVE_ORCAMENTO, 0, "Salvar");
+		item = menu.add(0, MENU_CANCEL_ORCAMENTO, 0, "Cancelar");
+		item = menu.add(0, MENU_DELETE_ORCAMENTO, 0, "Excluir");
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_SAVE_ORCAMENTO:
+			if (camposValidos()) {
+				saveOrcamento();
+			}
+			return true;
+		case MENU_CANCEL_ORCAMENTO:
+			finish();
+			return true;
+		case MENU_DELETE_ORCAMENTO:
+			deleteOrcamento();
+			return true;
+		}
+		return false;
+	}		
 
 }
