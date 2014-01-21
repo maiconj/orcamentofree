@@ -25,6 +25,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private Intent intentOrcamento;
 	private OrcamentoFreeDao dbHelp = null;
 	private static final String LOG = "DESENV";
+	private static final int ADD_ORCAMENTO = 0;
+	private static final int EDIT_ORCAMENTO = 1;
+	private static final int DELET_ORCAMENTO = 2;
+	private static final int SAVE_ORCAMENTO = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			carregaComponentes();
 
 			/** Carrega Lista de orcamentos **/
-			carregaListaOrcamentos();
-			
-			/** Ação do botão 'Adiconar Produto' **/
+			atualizaListaOrcamentos();
+
+			/** Ação do botão 'Adiconar Orcamento' **/
 			btnOrcamentoAddAction();
 
 		} catch (Exception e) {
@@ -46,37 +50,43 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	public void carregaComponentes() {
 		this.addOrcamentoBtn = (Button) findViewById(R.id.btn_orcamento_add);
-		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
 		dbHelp = new OrcamentoFreeDao(getApplicationContext());
 	}
-	
-	public void carregaListaOrcamentos() {
+
+	public void atualizaListaOrcamentos() {
 		ArrayList<Orcamento> orcamentoLst = new ArrayList<Orcamento>();
 		orcamentoLst.clear();
 		orcamentoLst.addAll(dbHelp.findOrcamento());
-		OrcamentoListAdapter orcamentoAdapter = new OrcamentoListAdapter(this, orcamentoLst);
+		OrcamentoListAdapter orcamentoAdapter = new OrcamentoListAdapter(this,orcamentoLst);
 		listView = (ListView) findViewById(R.id.orcamentoList);
 		listView.setAdapter(orcamentoAdapter);
 		listView.setOnItemClickListener(this);
 	}
 
 	public void btnOrcamentoAddAction() {
+		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
 		addOrcamentoBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivity(intentOrcamento);
+				startActivityForResult(intentOrcamento, ADD_ORCAMENTO);
 			}
 		});
 	}
 
-	
-
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Orcamento orc = (Orcamento) listView.getAdapter().getItem(arg2);
-		Toast.makeText(this, "Orcamento Selecionado- id: "+ orc.get_id()+" - descricao: "+orc.getDescricao(), Toast.LENGTH_LONG).show();
-		
+		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
+		intentOrcamento.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(orc.get_id()));
+		startActivityForResult(intentOrcamento, EDIT_ORCAMENTO);
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
+		atualizaListaOrcamentos();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

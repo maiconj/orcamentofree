@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class IntroActivity extends Activity implements Runnable {
 
-	private final int DELAY = 3000;
+	private final int DELAY = 2000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

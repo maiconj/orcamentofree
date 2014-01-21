@@ -40,8 +40,13 @@ public class OrcamentoActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_orcamento);
+
+			/** Inicializa componetes da tela **/
 			carregaComponentes();
 
+			/** Carrega ORCAMENTO selecionado na listview**/
+			CarregaOrcamentoEdit();
+			
 			/** Ação do botão 'Adiconar Produto' **/
 			btnProdutoAddAction();
 
@@ -109,27 +114,56 @@ public class OrcamentoActivity extends Activity {
 
 		this.dateUtils = new DateUtils();
 		this.i = new Intent(this, ProdutoActivity.class);
+	}
 
-		//TODO
-//		if (itent != null) {
-//			this.orcamento = id.listview;
-//		}else {this.orcamento = new Orcamento();}
-		this.orcamento = new Orcamento();
+	private void CarregaOrcamentoEdit() {
+		Intent it = getIntent();
+		if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
+			this.orcamento = dbHelp.findOrcamentoById( Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
+			this.txtOrcamentoDescricao.setText(orcamento.getDescricao());
+			this.txtOrcamentoLoja.setText(orcamento.getLoja());
+			this.txtOrcamentoEndereco.setText(orcamento.getEndereco());
+		} else {
+			this.orcamento = new Orcamento();
+		}
 	}
 
 	private void saveOrcamento() {
 		try {
-			
-		this.orcamento = new Orcamento(this.txtOrcamentoDescricao.getText().toString(), 
-				this.txtOrcamentoLoja.getText().toString(), 
-				this.dateUtils.getNewDate().toString(), 
-				this.txtOrcamentoEndereco.getText().toString());
+			if (this.orcamento.get_id() >= 1) {
+				updateOrcamento();
+			} else {
+				newOrcamento();
+			}
 			this.orcamento = dbHelp.findOrcamentoById(this.dbHelp.saveOrcamento(this.orcamento));
-			imprimeOrcamentos();			
+			// TODO
+			imprimeOrcamentos();
 		} catch (Exception e) {
-			Log.e(LOG,e.getMessage());
+			Log.e(LOG, e.getMessage());
 		}
-		Toast.makeText(this, "Orcamento Salvo com Sucesso",	Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Orcamento Salvo com Sucesso", Toast.LENGTH_LONG).show();
+	}
+
+	/**
+	 * Carrega os campos no orcamento para fazer update
+	 * **/
+	private void updateOrcamento() {
+		this.orcamento.setDescricao(this.txtOrcamentoDescricao.getText().toString());
+		this.orcamento.setLoja(this.txtOrcamentoLoja.getText().toString());
+		this.orcamento.setData(this.dateUtils.getNewDate().toString());
+		this.orcamento.setEndereco(this.txtOrcamentoEndereco.getText().toString());
+	}
+	
+
+	/**
+	 * Cria novo objeto de orcamento carregando os campos para salvar
+	 * 
+	 **/
+	private void newOrcamento() {
+		this.orcamento = new Orcamento(this.txtOrcamentoDescricao.getText().toString(), 
+						               this.txtOrcamentoLoja.getText().toString(), 
+						               this.dateUtils.getNewDate().toString(),
+						               this.txtOrcamentoEndereco.getText().toString());
 	}
 
 	private void deleteOrcamento() {
@@ -180,6 +214,8 @@ public class OrcamentoActivity extends Activity {
 			Log.e(LOG,"----------------------");
 		}
 	}
+	
+	
 	
 	
 	 @Override
