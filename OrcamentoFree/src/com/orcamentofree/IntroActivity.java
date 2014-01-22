@@ -15,7 +15,7 @@ public class IntroActivity extends Activity implements Runnable {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
-		Toast.makeText(this, "Por favor, aguarde...", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Por favor, aguarde...", DELAY).show();
 		Handler h = new Handler();
 		h.postDelayed(this, DELAY);
 	}

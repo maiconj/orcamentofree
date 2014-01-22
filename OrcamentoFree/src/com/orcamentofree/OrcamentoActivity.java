@@ -33,11 +33,12 @@ public class OrcamentoActivity extends Activity {
 	private DateUtils dateUtils;
 
 	private OrcamentoFreeDao dbHelp = null;
-	private Intent i;
+	private Intent intentProduto;
 	private static final String LOG = "DESENV";
 	private static final int MENU_SAVE_ORCAMENTO = 1;
 	private static final int MENU_CANCEL_ORCAMENTO = 2;
 	private static final int MENU_DELETE_ORCAMENTO = 3;
+	private static final int ORCAMENTO_ADD_PRODUTO = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +97,10 @@ public class OrcamentoActivity extends Activity {
 	}
 
 	private void btnProdutoAddAction() {
+		intentProduto.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(this.orcamento.get_id()));
 		btnProdutoAdd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivity(i);
+				startActivityForResult(intentProduto, ORCAMENTO_ADD_PRODUTO);
 			}
 
 		});
@@ -117,7 +119,7 @@ public class OrcamentoActivity extends Activity {
 		this.txtOrcamentoEndereco = (EditText) findViewById(R.id.txt_orcamento_endereco);
 
 		this.dateUtils = new DateUtils();
-		this.i = new Intent(this, ProdutoActivity.class);
+		this.intentProduto = new Intent(this, ProdutoActivity.class);
 	}
 
 	private void CarregaOrcamentoEdit() {

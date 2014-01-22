@@ -1,90 +1,91 @@
 package com.orcamentofree.pojo;
 
-
 public class Produto {
 
-	private int id;
+	private int _id;
 	private String codigo;
 	private String descricao;
 	private Float quantidade;
 	private Float preco;
 	private String foto;
-	private int idOrcamento;
+	private int id_orcamento;
 
-	
+	public static String[] colunas = new String[] { "_id", "codigo", "descricao", "quantidade", "preco", "foto", "idOrcamento" };
+
 	public Produto() {
 	}
 
-	public Produto(int id, String codigo, String descricao, Float quantidade, Float preco, String foto, int idOrcamento) {
+	public Produto(int id, String codigo, String descricao, Float quantidade,
+			Float preco, String foto, int idOrcamento) {
 		super();
-		this.setId(id);
+		this.set_id(id);
 		this.setCodigo(codigo);
 		this.setDescricao(descricao);
 		this.setQuantidade(quantidade);
 		this.setPreco(preco);
 		this.setFoto(foto);
-		this.setIdOrcamento(idOrcamento);
+		this.set_idOrcamento(idOrcamento);
 	}
-	
-	public Produto(String codigo, String descricao, String quantidade, String preco) {
+
+	public Produto(String codigo, String descricao, String quantidade,
+			String preco) {
 		super();
 		this.setCodigo(codigo);
 		this.setDescricao(descricao);
-		
-		if (quantidade == null || quantidade.isEmpty()) {
+
+		if (quantidade == null) {
 			this.setQuantidade(Float.valueOf(0));
 		} else {
 			this.setQuantidade(Float.valueOf(quantidade));
 		}
-		
-		if (preco == null || preco.isEmpty()) {
+
+		if (preco == null) {
 			this.setPreco(Float.valueOf(0));
 		} else {
 			this.setPreco(Float.valueOf(preco));
 		}
 	}
 
-	public Produto(String id, String codigo, String descricao, String quantidade, String preco, String foto, String idOrcamento) {
+	public Produto(String id, String codigo, String descricao,
+			String quantidade, String preco, String foto, String idOrcamento) {
 		super();
-		
-		if (id == null || id.isEmpty()) {
-			this.setId(Integer.valueOf(0));
+
+		if (id == null ) {
+			this.set_id(Integer.valueOf(0));
 		} else {
-			this.setId(Integer.valueOf(id));
+			this.set_id(Integer.valueOf(id));
 		}
-		
+
 		this.setCodigo(codigo);
 		this.setDescricao(descricao);
-		
-		if (quantidade == null || quantidade.isEmpty()) {
+
+		if (quantidade == null) {
 			this.setQuantidade(Float.valueOf(0));
 		} else {
 			this.setQuantidade(Float.valueOf(quantidade));
 		}
-		
-		if (preco == null || preco.isEmpty()) {
+
+		if (preco == null) {
 			this.setPreco(Float.valueOf(0));
 		} else {
 			this.setPreco(Float.valueOf(preco));
 		}
-		
-		
-		if (idOrcamento == null || idOrcamento.isEmpty()) {
-			this.setIdOrcamento(Integer.valueOf(0));
+
+		if (idOrcamento == null) {
+			this.set_idOrcamento(Integer.valueOf(0));
 		} else {
-			this.setIdOrcamento(Integer.valueOf(idOrcamento));
+			this.set_idOrcamento(Integer.valueOf(idOrcamento));
 		}
 		this.setFoto(foto);
 
 	}
 
-	
-	public int getId() {
-		return id;
+	public int get_id() {
+		return _id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void set_id(int _id) {
+		this._id = _id;
 	}
 
 	public String getDescricao() {
@@ -118,7 +119,7 @@ public class Produto {
 	public void setPreco(Float preco) {
 		this.preco = preco;
 	}
-	
+
 	public String getFoto() {
 		return foto;
 	}
@@ -127,17 +128,17 @@ public class Produto {
 		this.foto = foto;
 	}
 
-	public int getIdOrcamento() {
-		return idOrcamento;
+	public int get_idOrcamento() {
+		return id_orcamento;
 	}
 
-	public void setIdOrcamento(int idOrcamento) {
-		this.idOrcamento = idOrcamento;
+	public void set_idOrcamento(int idOrcamento) {
+		this.id_orcamento = idOrcamento;
 	}
 
 	public String getTotal() {
 		String retorno = "0.00";
-		if(!Float.isNaN(this.getQuantidade()) && !Float.isNaN(this.getPreco())){
+		if (!Float.isNaN(this.getQuantidade()) && !Float.isNaN(this.getPreco())) {
 			retorno = String.valueOf(this.getQuantidade() * this.getPreco());
 		}
 		return retorno;
