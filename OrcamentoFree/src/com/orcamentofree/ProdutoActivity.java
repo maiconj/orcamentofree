@@ -1,29 +1,40 @@
 package com.orcamentofree;
 
-import com.orcamentofree.base.OrcamentoFreeDao;
-import com.orcamentofree.pojo.Orcamento;
+import java.util.ArrayList;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.orcamentofree.base.OrcamentoFreeDao;
+import com.orcamentofree.pojo.Orcamento;
+import com.orcamentofree.pojo.Produto;
 
 public class ProdutoActivity extends Activity {
 
 	private Button btnSaveProduto;
 	private Button btnDeleteProduto;
 	private Button btnCancelProduto;
+	
+	private EditText txtProdutoCodigo;
+	private EditText txtProdutoDescricao;
+	private EditText txtProdutoPreco;
+	private EditText txtProdutoQtd;
+	
 	private static final String LOG = "DESENV";
 	private static final int MENU_SAVE_PRODUTO = 1;
 	private static final int MENU_CANCEL_PRODUTO = 2;
 	private static final int MENU_DELETE_PRODUTO = 3;
 	private OrcamentoFreeDao dbHelp = null;
 	private Orcamento orcamento;
+	private Produto produto;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +44,9 @@ public class ProdutoActivity extends Activity {
 		/** Inicializa componetes da tela **/
 		carregaComponentes();
 
-		/** Carrega ORCAMENTO selecionado**/
-		carregaOrcamento();
-
+		/** Carrega PRODUTO selecionado**/
+		carregaProduto();
+		
 		/** Ação do botão 'Salvar Orcamento' **/
 		btnSaveProdutoAction();
 
@@ -81,40 +92,110 @@ public class ProdutoActivity extends Activity {
 		this.btnSaveProduto = (Button) findViewById(R.id.btn_produto_save);
 		this.btnDeleteProduto = (Button) findViewById(R.id.btn_produto_delete);
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
+		
+		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
+		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_orcamento_descricao);
+		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
+		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
+		
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 	}
 
-	private void carregaOrcamento() {
-		try {
-			Intent it = getIntent();
-			if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
+	private void carregaProduto() {
+		Intent it = getIntent();
+		if (it.getStringExtra("ID_PRODUTO_EDIT") != null) {
+			this.produto = dbHelp.findProdutoById(Integer.valueOf(it.getStringExtra("ID_PRODUTO_EDIT")));
+			this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(this.produto.get_idOrcamento()));
+			this.txtProdutoCodigo.setText(this.produto.getCodigo());
+			this.txtProdutoDescricao.setText(this.produto.getDescricao());
+			this.txtProdutoPreco.setText(this.produto.getPreco().toString());
+			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
+		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
-				Toast.makeText(this,"ID do Orcamento Selecionado" + this.orcamento, 2000).show();
-				Log.e(LOG, " - _id: " + orcamento.get_id());
-				Log.e(LOG, " - descricao: " + orcamento.getDescricao());
-				Log.e(LOG, " - loja: " + orcamento.getLoja());
-				Log.e(LOG, " - data: " + orcamento.getData());
-				Log.e(LOG, " - endereco: " + orcamento.getEndereco());
-				Log.e(LOG, "----------------------");
+				this.produto = new Produto();
+		}else{
+			Toast.makeText(this,"Desculpe o transtorno, selecione um orcamento primeiro",Toast.LENGTH_SHORT).show();
+			finish();
+		}
+	}
+	
+	private void saveProduto() {
+		try {
+			if (this.produto.get_id() >= 1) {
+				updateProduto();
 			} else {
-				Toast.makeText(this,"Desculpe o transtorno, selecione um orcamento primeiro",2000).show();
-				finish();
+				newProduto();
 			}
+			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
+			imprimeProdutos();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
+		Toast.makeText(this, "Produto Salvo com Sucesso", Toast.LENGTH_LONG).show();
 	}
 
-	private void saveProduto() {
-		finish();
+	//TODO
+	private void imprimeProdutos(){
+		ArrayList<Produto> produtoLst = (ArrayList<Produto>) this.dbHelp.findProduto();
+		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
+		for (Produto prod : produtoLst) {
+			Log.e(LOG," - _id: "+ prod.get_id());
+			Log.e(LOG," - codigo: "+ prod.getCodigo());
+			Log.e(LOG," - descricao: "+ prod.getDescricao());
+			Log.e(LOG," - preco: "+ prod.getPreco());
+			Log.e(LOG," - qtd: "+ prod.getQuantidade());
+			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
+			Log.e(LOG,"----------------------");
+		}
 	}
-
+	
 	private void deleteProduto() {
-		finish();
+		try {
+			if (this.produto.get_id() >= 1) {
+				this.dbHelp.deleteProdutoById(this.produto.get_id());
+				this.produto = new Produto();
+				Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
+				limpaCampos();
+			} else {
+				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			Log.e(LOG,e.getMessage());
+		}
 	}
 
 	private void cancelProduto() {
 		finish();
+	}
+	
+	/**
+	 * Carrega os campos no PRODUTO para fazer update
+	 * **/
+	private void updateProduto() {
+		this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
+		this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
+		this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
+		this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+	}
+	
+
+	/**
+	 * Cria novo objeto de PRODUTO carregando os campos para salvar
+	 **/
+	private void newProduto() {
+		this.produto = new Produto();
+		this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
+		this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
+		this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
+		this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+		this.produto.set_idOrcamento(this.orcamento.get_id());
+	}
+
+	private void limpaCampos() {
+		this.txtProdutoCodigo.setText("");
+		this.txtProdutoDescricao.setText("");
+		this.txtProdutoQtd.setText("");
+		this.txtProdutoPreco.setText("");
 	}
 
 //	 @Override

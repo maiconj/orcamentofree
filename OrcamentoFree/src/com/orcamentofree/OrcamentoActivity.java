@@ -12,10 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
+import com.orcamentofree.listAdapter.OrcamentoListAdapter;
 import com.orcamentofree.pojo.Orcamento;
+import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.utils.DateUtils;
 
 public class OrcamentoActivity extends Activity {
@@ -97,6 +100,7 @@ public class OrcamentoActivity extends Activity {
 	}
 
 	private void btnProdutoAddAction() {
+		this.intentProduto = new Intent(this, ProdutoActivity.class);
 		intentProduto.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(this.orcamento.get_id()));
 		btnProdutoAdd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -253,5 +257,29 @@ public class OrcamentoActivity extends Activity {
 		}
 		return false;
 	}		
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		this.intentProduto = new Intent(this, ProdutoActivity.class);
+		atualizaListaProdutos();
+	}
+	
+	public void atualizaListaProdutos() {
+		ArrayList<Produto> produtoLst = new ArrayList<Produto>();
+		produtoLst.clear();
+		produtoLst.addAll(dbHelp.findProduto());	
+		//TODO
+		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
+		for (Produto prod : produtoLst) {
+			Log.e(LOG," - _id: "+ prod.get_id());
+			Log.e(LOG," - codigo: "+ prod.getCodigo());
+			Log.e(LOG," - descricao: "+ prod.getDescricao());
+			Log.e(LOG," - preco: "+ prod.getPreco());
+			Log.e(LOG," - qtd: "+ prod.getQuantidade());
+			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
+			Log.e(LOG,"----------------------");
+		}
+	}
 
 }
