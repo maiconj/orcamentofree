@@ -81,6 +81,7 @@ public class ProdutoActivity extends Activity {
 		this.btnSaveProduto = (Button) findViewById(R.id.btn_produto_save);
 		this.btnDeleteProduto = (Button) findViewById(R.id.btn_produto_delete);
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
+		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 	}
 
 	private void carregaOrcamento() {
