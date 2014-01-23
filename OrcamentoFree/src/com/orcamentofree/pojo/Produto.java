@@ -10,7 +10,7 @@ public class Produto {
 	private String foto;
 	private int id_orcamento;
 
-	public static String[] colunas = new String[] { "_id", "codigo", "descricao", "quantidade", "preco", "foto", "idOrcamento" };
+	public static String[] colunas = new String[] { "_id", "codigo", "descricao", "quantidade", "preco", "foto", "id_orcamento" };
 
 	public Produto() {
 	}

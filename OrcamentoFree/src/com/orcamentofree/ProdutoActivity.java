@@ -81,8 +81,9 @@ public class ProdutoActivity extends Activity {
 	private void btnSaveProdutoAction() {
 		btnSaveProduto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Log.w("btnSaveOrcamento", "Aciondo botão de salvar produto.");
-				saveProduto();
+				if (camposValidos()) {
+					saveProduto();
+				}
 			}
 
 		});
@@ -94,7 +95,7 @@ public class ProdutoActivity extends Activity {
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
 		
 		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
-		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_orcamento_descricao);
+		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
 		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
 		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
 		
@@ -127,11 +128,11 @@ public class ProdutoActivity extends Activity {
 				newProduto();
 			}
 			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
+			Toast.makeText(this, "Produto Salvo com Sucesso", Toast.LENGTH_LONG).show();
 			imprimeProdutos();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
-		Toast.makeText(this, "Produto Salvo com Sucesso", Toast.LENGTH_LONG).show();
 	}
 
 	//TODO
@@ -156,6 +157,7 @@ public class ProdutoActivity extends Activity {
 				this.produto = new Produto();
 				Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
 				limpaCampos();
+				imprimeProdutos();
 			} else {
 				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
 			}
@@ -172,10 +174,16 @@ public class ProdutoActivity extends Activity {
 	 * Carrega os campos no PRODUTO para fazer update
 	 * **/
 	private void updateProduto() {
-		this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
-		this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
-		this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-		this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+		try {
+			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
+			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
+			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
+			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			//TODO
+			this.produto.setFoto("FOTO TESTE");
+		} catch (Exception e) {
+			Log.e(LOG,e.getMessage());
+		}
 	}
 	
 
@@ -183,13 +191,32 @@ public class ProdutoActivity extends Activity {
 	 * Cria novo objeto de PRODUTO carregando os campos para salvar
 	 **/
 	private void newProduto() {
-		this.produto = new Produto();
-		this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
-		this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
-		this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-		this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
-		this.produto.set_idOrcamento(this.orcamento.get_id());
+		try {
+			this.produto = new Produto();
+			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
+			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
+			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
+			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			this.produto.set_idOrcamento(this.orcamento.get_id());
+			//TODO
+			this.produto.setFoto("FOTO TESTE");
+			
+		} catch (Exception e) {
+			Log.e(LOG,e.getMessage());
+		}
 	}
+	
+	public boolean camposValidos() {
+		boolean erro = true;
+		if (this.txtProdutoDescricao.getText().toString().length()<=0 
+				|| this.txtProdutoPreco.getText().toString().length()<=0
+				|| this.txtProdutoQtd.getText().toString().length()<=0) {
+			Toast.makeText(this, "Operação cancelada, preencha os campos!",	Toast.LENGTH_LONG).show();
+			erro = false;
+		}
+		return erro;
+	}
+
 
 	private void limpaCampos() {
 		this.txtProdutoCodigo.setText("");
