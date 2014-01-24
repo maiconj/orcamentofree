@@ -71,15 +71,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	public void btnOrcamentoAddAction() {
-		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
 		addOrcamentoBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				initOrcamento(ADD_ORCAMENTO);
+				initOrcamentoADD(ADD_ORCAMENTO);
 			}
 		});
 	}
 	
-	private void initOrcamento(int requestCode){
+	private void initOrcamentoADD(int requestCode) {
+		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
+		startActivityForResult(intentOrcamento, requestCode);
+	}
+
+	private void initOrcamentoEdit(int requestCode) {
 		startActivityForResult(intentOrcamento, requestCode);
 	}
 
@@ -88,7 +92,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Orcamento orc = (Orcamento) listView.getAdapter().getItem(arg2);
 		this.intentOrcamento = new Intent(this, OrcamentoActivity.class);
 		intentOrcamento.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(orc.get_id()));
-		initOrcamento(EDIT_ORCAMENTO);
+		initOrcamentoEdit(EDIT_ORCAMENTO);
 	}
 
 	@Override
@@ -117,7 +121,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_ADD_ORCAMENTO:
-			initOrcamento(ADD_ORCAMENTO);
+			initOrcamentoADD(ADD_ORCAMENTO);
 			return true;
 		case MENU_SAIR:
 			finish();

@@ -77,6 +77,25 @@ public class OrcamentoFreeDao {
 		return count;
 	}
 
+	// Deleta o orcamento com o id fornecido e os produtos associados ao mesmo
+	public int deleteOrcamentoByIdAndProdutos(long id) {
+		// Delete Produto
+		List<Produto> produtos = new ArrayList<Produto>();
+		produtos.addAll(this.findProdutoByOrcamento(this.findOrcamentoById(id)));
+		for (Produto produto : produtos) {
+			this.deleteProdutoById(produto.get_id());
+		}
+
+		// Delete Orcamento
+		String where = "_id=?";
+		String _id = String.valueOf(id);
+		String[] whereArgs = new String[] { _id };
+		int countOrcamento = db.delete(NOME_TABELA_ORCAMENTO, where, whereArgs);
+		Log.i(LOG, "Deletou [" + countOrcamento + "] Orcamentos");
+		return countOrcamento;
+	}
+	
+
 	// Busca o orcamento pelo id
 	public Orcamento findOrcamentoById(long id) {
 		// select * from orcamento where _id=?
@@ -238,6 +257,29 @@ public class OrcamentoFreeDao {
 			return produto;
 		}
 		return null;
+	}
+	
+	// Busca o produto pelo id
+	public List<Produto> findProdutoByOrcamento(Orcamento orc) {
+		// select * from produto where _id=?
+		Cursor c = db.query(true, NOME_TABELA_PRODUTO, Produto.colunas,	"id_orcamento=" + orc.get_id(), null, null, null, null, null);
+		List<Produto> produtos = new ArrayList<Produto>();
+		if (c.moveToFirst()) {
+			// Loop até o final
+			do {
+				Produto produto = new Produto();
+				produtos.add(produto);
+				// recupera os atributos de produto
+				produto.set_id(c.getInt(0));
+				produto.setDescricao(c.getString(1));
+				produto.setCodigo(c.getString(2));
+				produto.setQuantidade(c.getFloat(3));
+				produto.setPreco(c.getFloat(4));
+				produto.setFoto(c.getString(5));
+				produto.set_idOrcamento(c.getInt(6));
+			} while (c.moveToNext());
+		}
+		return produtos;	
 	}
 
 	// Retorna um cursor com todos os produtos

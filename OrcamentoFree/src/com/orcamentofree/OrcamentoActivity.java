@@ -10,19 +10,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.listAdapter.OrcamentoListAdapter;
+import com.orcamentofree.listAdapter.ProdutoListAdapter;
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.utils.DateUtils;
 
-public class OrcamentoActivity extends Activity {
+public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 
+	ListView listView;
 	private Button btnProdutoAdd;
 	private Button btnOrcamentoSave;
 	private Button btnOrcamentoDelete;
@@ -42,6 +46,9 @@ public class OrcamentoActivity extends Activity {
 	private static final int MENU_CANCEL_ORCAMENTO = 2;
 	private static final int MENU_DELETE_ORCAMENTO = 3;
 	private static final int ORCAMENTO_ADD_PRODUTO = 1;
+	private static final int ORCAMENTO_EDIT_PRODUTO = 2;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,9 @@ public class OrcamentoActivity extends Activity {
 
 			/** Carrega ORCAMENTO selecionado na listview**/
 			CarregaOrcamentoEdit();
+			
+			/** Carrega Lista de produtos **/
+			atualizaListaProdutos();
 			
 			/** Ação do botão 'Adiconar Produto' **/
 			btnProdutoAddAction();
@@ -100,14 +110,21 @@ public class OrcamentoActivity extends Activity {
 	}
 
 	private void btnProdutoAddAction() {
-		this.intentProduto = new Intent(this, ProdutoActivity.class);
-		intentProduto.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(this.orcamento.get_id()));
 		btnProdutoAdd.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivityForResult(intentProduto, ORCAMENTO_ADD_PRODUTO);
+				// salva o orcamento antes de mudar para tela de produto
+				if (camposValidos()) {
+					saveBeforeProdutoOrcamento();
+					initProduto(ORCAMENTO_ADD_PRODUTO);
+				}
 			}
-
 		});
+	}
+
+	private void initProduto(int requestCode){
+		this.intentProduto = new Intent(this, ProdutoActivity.class);
+		intentProduto.putExtra("ID_ORCAMENTO_EDIT", String.valueOf(this.orcamento.get_id()));
+		startActivityForResult(intentProduto, requestCode);
 	}
 
 	private void carregaComponentes() {
@@ -151,6 +168,19 @@ public class OrcamentoActivity extends Activity {
 		}
 		Toast.makeText(this, "Orcamento Salvo com Sucesso", Toast.LENGTH_LONG).show();
 	}
+	
+	private void saveBeforeProdutoOrcamento() {
+		try {
+			if (this.orcamento.get_id() >= 1) {
+				updateOrcamento();
+			} else {
+				newOrcamento();
+			}
+			this.orcamento = dbHelp.findOrcamentoById(this.dbHelp.saveOrcamento(this.orcamento));
+		} catch (Exception e) {
+			Log.e(LOG, e.getMessage());
+		}
+	}
 
 	/**
 	 * Carrega os campos no orcamento para fazer update
@@ -177,10 +207,11 @@ public class OrcamentoActivity extends Activity {
 	private void deleteOrcamento() {
 		try {
 			if (this.orcamento.get_id() >= 1) {
-				this.dbHelp.deleteOrcamentoById(this.orcamento.get_id());
+				this.dbHelp.deleteOrcamentoByIdAndProdutos(this.orcamento.get_id());
 				this.orcamento = new Orcamento();
 				Toast.makeText(this, "Orcamento deletado com sucesso!",	Toast.LENGTH_LONG).show();
 				limpaCampos();
+				atualizaListaProdutos();
 			} else {
 				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
 			}
@@ -261,25 +292,42 @@ public class OrcamentoActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		this.intentProduto = new Intent(this, ProdutoActivity.class);
 		atualizaListaProdutos();
 	}
 	
 	public void atualizaListaProdutos() {
-		ArrayList<Produto> produtoLst = new ArrayList<Produto>();
-		produtoLst.clear();
-		produtoLst.addAll(dbHelp.findProduto());	
-		//TODO
-		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
-		for (Produto prod : produtoLst) {
-			Log.e(LOG," - _id: "+ prod.get_id());
-			Log.e(LOG," - codigo: "+ prod.getCodigo());
-			Log.e(LOG," - descricao: "+ prod.getDescricao());
-			Log.e(LOG," - preco: "+ prod.getPreco());
-			Log.e(LOG," - qtd: "+ prod.getQuantidade());
-			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
-			Log.e(LOG,"----------------------");
+		try {
+			ArrayList<Produto> produtoLst = new ArrayList<Produto>();
+			produtoLst.clear();
+			produtoLst.addAll(dbHelp.findProdutoByOrcamento(this.orcamento));
+			ProdutoListAdapter produtoAdapter = new ProdutoListAdapter(this, produtoLst);
+			listView = (ListView) findViewById(R.id.produtoList);
+			listView.setAdapter(produtoAdapter);
+			listView.setOnItemClickListener(this);
+			
+			//TODO
+			Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
+			for (Produto prod : produtoLst) {
+				Log.e(LOG," - _id: "+ prod.get_id());
+				Log.e(LOG," - codigo: "+ prod.getCodigo());
+				Log.e(LOG," - descricao: "+ prod.getDescricao());
+				Log.e(LOG," - preco: "+ prod.getPreco());
+				Log.e(LOG," - qtd: "+ prod.getQuantidade());
+				Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
+				Log.e(LOG,"----------------------");
+			}
+			
+		} catch (Exception e) {
+			Log.e(LOG, e.getMessage());
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		Produto  produto = (Produto) listView.getAdapter().getItem(arg2);
+		this.intentProduto = new Intent(this, ProdutoActivity.class);
+		intentProduto.putExtra("ID_PRODUTO_EDIT", String.valueOf(produto.get_id()));
+		startActivityForResult(intentProduto, ORCAMENTO_EDIT_PRODUTO);
 	}
 
 }
