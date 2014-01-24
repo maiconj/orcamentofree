@@ -49,9 +49,9 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			TextView orcamento_endereco = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_endereco);
 			TextView orcamento_data = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_data);
 					
-			orcamento_descricao.setText(orcmnt.getDescricao());
-			orcamento_loja.setText(orcmnt.getLoja());
-			orcamento_endereco.setText(orcmnt.getEndereco());
+			orcamento_descricao.setText("Desc.: " + orcmnt.getDescricao());
+			orcamento_loja.setText("Loja: " + orcmnt.getLoja());
+			orcamento_endereco.setText("Endereço: " + orcmnt.getEndereco());
 			orcamento_data.setText(orcmnt.getData());
 			
 			return view;
