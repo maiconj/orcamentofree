@@ -48,10 +48,10 @@ public class ProdutoListAdapter extends BaseAdapter {
 			TextView produto_quantidade = (TextView) view.findViewById(com.orcamentofree.R.id.produto_quantidade);
 			TextView produto_preco = (TextView) view.findViewById(com.orcamentofree.R.id.produto_preco);
 
-			produto_descricao.setText(produto.getDescricao());
-			produto_codigo.setText(produto.getCodigo());
-			produto_quantidade.setText(String.valueOf(produto.getQuantidade()));
-			produto_preco.setText(String.valueOf(produto.getPreco()));
+			produto_descricao.setText("Desc.: "+produto.getDescricao());
+			produto_codigo.setText("Cód.: "+produto.getCodigo());
+			produto_quantidade.setText("Qtde.: "+String.valueOf(produto.getQuantidade()));
+			produto_preco.setText("R$: "+String.valueOf(produto.getPreco()));
 			
 			return view;
 		} catch (Exception e) {

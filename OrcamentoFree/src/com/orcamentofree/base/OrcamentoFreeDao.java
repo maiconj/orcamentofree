@@ -248,8 +248,8 @@ public class OrcamentoFreeDao {
 			c.moveToFirst();
 			Produto produto = new Produto();
 			produto.set_id(c.getInt(0));
-			produto.setDescricao(c.getString(1));
-			produto.setCodigo(c.getString(2));
+			produto.setCodigo(c.getString(1));
+			produto.setDescricao(c.getString(2));
 			produto.setQuantidade(c.getFloat(3));
 			produto.setPreco(c.getFloat(4));
 			produto.setFoto(c.getString(5));
@@ -271,8 +271,8 @@ public class OrcamentoFreeDao {
 				produtos.add(produto);
 				// recupera os atributos de produto
 				produto.set_id(c.getInt(0));
-				produto.setDescricao(c.getString(1));
-				produto.setCodigo(c.getString(2));
+				produto.setCodigo(c.getString(1));
+				produto.setDescricao(c.getString(2));
 				produto.setQuantidade(c.getFloat(3));
 				produto.setPreco(c.getFloat(4));
 				produto.setFoto(c.getString(5));

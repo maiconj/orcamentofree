@@ -1,7 +1,5 @@
 package com.orcamentofree;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -129,26 +127,26 @@ public class ProdutoActivity extends Activity {
 			}
 			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
 			Toast.makeText(this, "Produto Salvo com Sucesso", Toast.LENGTH_LONG).show();
-			imprimeProdutos();
+			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
 	}
 
 	//TODO
-	private void imprimeProdutos(){
-		ArrayList<Produto> produtoLst = (ArrayList<Produto>) this.dbHelp.findProduto();
-		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
-		for (Produto prod : produtoLst) {
-			Log.e(LOG," - _id: "+ prod.get_id());
-			Log.e(LOG," - codigo: "+ prod.getCodigo());
-			Log.e(LOG," - descricao: "+ prod.getDescricao());
-			Log.e(LOG," - preco: "+ prod.getPreco());
-			Log.e(LOG," - qtd: "+ prod.getQuantidade());
-			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
-			Log.e(LOG,"----------------------");
-		}
-	}
+//	private void imprimeProdutos(){
+//		ArrayList<Produto> produtoLst = (ArrayList<Produto>) this.dbHelp.findProduto();
+//		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
+//		for (Produto prod : produtoLst) {
+//			Log.e(LOG," - _id: "+ prod.get_id());
+//			Log.e(LOG," - codigo: "+ prod.getCodigo());
+//			Log.e(LOG," - descricao: "+ prod.getDescricao());
+//			Log.e(LOG," - preco: "+ prod.getPreco());
+//			Log.e(LOG," - qtd: "+ prod.getQuantidade());
+//			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
+//			Log.e(LOG,"----------------------");
+//		}
+//	}
 	
 	private void deleteProduto() {
 		try {
@@ -157,7 +155,6 @@ public class ProdutoActivity extends Activity {
 				this.produto = new Produto();
 				Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
 				limpaCampos();
-				imprimeProdutos();
 			} else {
 				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
 			}
