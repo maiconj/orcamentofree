@@ -4,27 +4,29 @@ package com.orcamentofree;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
-import com.orcamentofree.listAdapter.OrcamentoListAdapter;
 import com.orcamentofree.listAdapter.ProdutoListAdapter;
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.utils.DateUtils;
 
-public class OrcamentoActivity extends Activity  implements OnItemClickListener{
+public class OrcamentoActivity extends Activity  implements OnItemClickListener , Runnable  {
 
 	ListView listView;
 	private Button btnProdutoAdd;
@@ -38,6 +40,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 
 	private Orcamento orcamento;
 	private DateUtils dateUtils;
+	private AlertDialog alertDeleteOrcamento;
 
 	private OrcamentoFreeDao dbHelp = null;
 	private Intent intentProduto;
@@ -47,6 +50,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 	private static final int MENU_DELETE_ORCAMENTO = 3;
 	private static final int ORCAMENTO_ADD_PRODUTO = 1;
 	private static final int ORCAMENTO_EDIT_PRODUTO = 2;
+	private final int DELAY = 1000;
 	
 	
 
@@ -93,7 +97,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 	private void btnOrcamentoDeleteAction() {
 		btnOrcamentoDelete.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				deleteOrcamento();
+				confirmaOrcamentoSelecionado();
 			}
 		});
 	}
@@ -128,17 +132,14 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 	}
 
 	private void carregaComponentes() {
-		dbHelp = new OrcamentoFreeDao(getApplicationContext());
-
+		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 		this.btnProdutoAdd = (Button) findViewById(R.id.btn_produto_add);
 		this.btnOrcamentoSave = (Button) findViewById(R.id.btn_orcamento_save);
 		this.btnOrcamentoDelete = (Button) findViewById(R.id.btn_orcamento_delete);
 		this.btnOrcamentoCancel = (Button) findViewById(R.id.btn_orcamento_cancel);
-
 		this.txtOrcamentoDescricao = (EditText) findViewById(R.id.txt_orcamento_descricao);
 		this.txtOrcamentoLoja = (EditText) findViewById(R.id.txt_orcamento_loja);
 		this.txtOrcamentoEndereco = (EditText) findViewById(R.id.txt_orcamento_endereco);
-
 		this.dateUtils = new DateUtils();
 		this.intentProduto = new Intent(this, ProdutoActivity.class);
 	}
@@ -206,20 +207,49 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 
 	private void deleteOrcamento() {
 		try {
-			if (this.orcamento.get_id() >= 1) {
-				this.dbHelp.deleteOrcamentoByIdAndProdutos(this.orcamento.get_id());
-				this.orcamento = new Orcamento();
-				Toast.makeText(this, "Orcamento deletado com sucesso!",	Toast.LENGTH_LONG).show();
-				limpaCampos();
-				atualizaListaProdutos();
-			} else {
-				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
-			}
+			Toast.makeText(this, "Por favor, aguarde...", this.DELAY).show();
+			Handler h = new Handler();
+			h.postDelayed(this, this.DELAY);
+
+			this.dbHelp.deleteOrcamentoByIdAndProdutos(this.orcamento.get_id());
+			this.orcamento = new Orcamento();
+			Toast.makeText(this, "Orcamento deletado com sucesso!",	Toast.LENGTH_LONG).show();
+			limpaCampos();
+			atualizaListaProdutos();
+
 		} catch (Exception e) {
-			Log.e(LOG,e.getMessage());
+			Log.e(LOG, e.getMessage());
 		}
 	}
 
+	private void confirmaOrcamentoSelecionado() {
+		if (this.orcamento.get_id() >= 1) {
+			exibeMensagemDelete();
+		} else {
+			Toast.makeText(this, "Você deve selecionar um orcamento!", Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void exibeMensagemDelete(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Excluir Orçamento");
+        builder.setMessage("Isto irá deletar todos os produtos associados.\nVocê tem certeza?");
+    
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+               deleteOrcamento();
+            }
+        });
+       
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+            	Log.i(LOG, "Orcamento nao deletado.");
+            }
+        });
+        alertDeleteOrcamento = builder.create();
+        alertDeleteOrcamento.show();
+	}	
+	
 	private void limpaCampos() {
 		this.txtOrcamentoDescricao.setText("");
 		this.txtOrcamentoLoja.setText("");
@@ -329,5 +359,11 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener{
 		intentProduto.putExtra("ID_PRODUTO_EDIT", String.valueOf(produto.get_id()));
 		startActivityForResult(intentProduto, ORCAMENTO_EDIT_PRODUTO);
 	}
+
+	@Override
+	public void run() {
+		finish();
+	}
+
 
 }

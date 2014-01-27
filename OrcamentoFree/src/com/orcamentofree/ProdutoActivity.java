@@ -1,8 +1,11 @@
 package com.orcamentofree;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,8 +17,9 @@ import android.widget.Toast;
 import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
+import com.orcamentofree.utils.MascaraMonetaria;
 
-public class ProdutoActivity extends Activity {
+public class ProdutoActivity extends Activity implements  Runnable  {
 
 	private Button btnSaveProduto;
 	private Button btnDeleteProduto;
@@ -24,7 +28,7 @@ public class ProdutoActivity extends Activity {
 	private EditText txtProdutoCodigo;
 	private EditText txtProdutoDescricao;
 	private EditText txtProdutoPreco;
-	private EditText txtProdutoQtd;
+	private EditText txtProdutoQtd;	
 	
 	private static final String LOG = "DESENV";
 	private static final int MENU_SAVE_PRODUTO = 1;
@@ -33,6 +37,8 @@ public class ProdutoActivity extends Activity {
 	private OrcamentoFreeDao dbHelp = null;
 	private Orcamento orcamento;
 	private Produto produto;
+	private AlertDialog alertDeleteProduto;
+	private final int DELAY = 1000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +76,7 @@ public class ProdutoActivity extends Activity {
 	private void btnDeleteProdutoAction() {
 		btnDeleteProduto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Log.w("btnDeleteOrcamento", "Aciondo botão de excluir produto.");
-				deleteProduto();
+				confirmaProdutoSelecionado();				
 			}
 		});
 	}
@@ -98,6 +103,9 @@ public class ProdutoActivity extends Activity {
 		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
 		
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
+		//add mascara
+		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
+		
 	}
 
 	private void carregaProduto() {
@@ -150,18 +158,49 @@ public class ProdutoActivity extends Activity {
 	
 	private void deleteProduto() {
 		try {
-			if (this.produto.get_id() >= 1) {
-				this.dbHelp.deleteProdutoById(this.produto.get_id());
-				this.produto = new Produto();
-				Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
-				limpaCampos();
-			} else {
-				Toast.makeText(this, "Operação cancelada, você deve selecionar um orcamento!",	Toast.LENGTH_LONG).show();
-			}
+			Toast.makeText(this, "Por favor, aguarde...", this.DELAY).show();
+			Handler h = new Handler();
+			h.postDelayed(this, this.DELAY);
+
+			this.dbHelp.deleteProdutoById(this.produto.get_id());
+			this.produto = new Produto();
+			Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
+			limpaCampos();
+
 		} catch (Exception e) {
-			Log.e(LOG,e.getMessage());
+			Log.e(LOG, e.getMessage());
 		}
 	}
+	
+	
+	private void confirmaProdutoSelecionado() {
+		if (this.produto.get_id() >= 1) {
+			exibeMensagemDelete();
+		} else {
+			Toast.makeText(this, "Você deve selecionar um Produto!", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	private void exibeMensagemDelete(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Excluir Produto");
+        builder.setMessage("Isto irá excluir o produto selecionado.\nVocê tem certeza?");
+    
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+            	deleteProduto();
+            }
+        });
+       
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+            	Log.i(LOG, "Produto nao deletado.");
+            }
+        });
+        alertDeleteProduto = builder.create();
+        alertDeleteProduto.show();
+	}	
+
 
 	private void cancelProduto() {
 		finish();
@@ -175,7 +214,7 @@ public class ProdutoActivity extends Activity {
 			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
 			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			//TODO
 			this.produto.setFoto("FOTO TESTE");
 		} catch (Exception e) {
@@ -253,5 +292,11 @@ public class ProdutoActivity extends Activity {
 			return true;
 		}
 		return false;
-	}	
+	}
+
+	@Override
+	public void run() {
+		finish();		
+	}
+	
 }
