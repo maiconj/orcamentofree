@@ -232,7 +232,7 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
 			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.set_idOrcamento(this.orcamento.get_id());
 			//TODO
 			this.produto.setFoto("FOTO TESTE");
