@@ -55,13 +55,20 @@
         </TableRow>
 
         <TableRow>
-
-            <Button
+<!--             TODO -->
+            <ImageButton
                 android:id="@+id/btn_produto_foto"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent" 
                 android:layout_weight="1"
-                android:text="@string/btn_produto_foto" />
+                android:src="@drawable/ic_launcher_old"/>
+            
+<!--             <Button -->
+<!--                 android:id="@+id/btn_produto_foto" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_weight="1" -->
+<!--                 android:text="@string/btn_produto_foto" /> -->
         </TableRow>
 
         <TableRow>
