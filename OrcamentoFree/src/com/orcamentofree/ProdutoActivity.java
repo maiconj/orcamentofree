@@ -19,7 +19,7 @@ import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.utils.MascaraMonetaria;
 
-public class ProdutoActivity extends Activity implements  Runnable  {
+public class ProdutoActivity extends Activity{
 
 	private Button btnSaveProduto;
 	private Button btnDeleteProduto;
@@ -38,7 +38,7 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 	private Orcamento orcamento;
 	private Produto produto;
 	private AlertDialog alertDeleteProduto;
-	private final int DELAY = 1000;
+	private final int DELAY = 800;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,8 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 		
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 		//add mascara
-		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
+		//TODO
+		//txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
 		
 	}
 
@@ -134,7 +135,7 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 				newProduto();
 			}
 			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
-			Toast.makeText(this, "Produto Salvo com Sucesso", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Produto Salvo com Sucesso", this.DELAY).show();
 			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
@@ -158,15 +159,11 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 	
 	private void deleteProduto() {
 		try {
-			Toast.makeText(this, "Por favor, aguarde...", this.DELAY).show();
-			Handler h = new Handler();
-			h.postDelayed(this, this.DELAY);
-
 			this.dbHelp.deleteProdutoById(this.produto.get_id());
 			this.produto = new Produto();
-			Toast.makeText(this, "Produto deletado com sucesso!",	Toast.LENGTH_LONG).show();
 			limpaCampos();
-
+			Toast.makeText(this, "Produto deletado com sucesso!",	this.DELAY).show();
+			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
@@ -214,8 +211,9 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
 			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
+			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
 			//TODO
+//			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.setFoto("FOTO TESTE");
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
@@ -292,11 +290,6 @@ public class ProdutoActivity extends Activity implements  Runnable  {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void run() {
-		finish();		
 	}
 	
 }

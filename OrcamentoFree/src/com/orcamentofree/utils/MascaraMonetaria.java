@@ -67,7 +67,7 @@ public class MascaraMonetaria implements TextWatcher {
 
 	public String replaceField(String valor) {
 		String valorReplace = null;
-		valorReplace = valor.replaceAll("RS", "").replace(",", ".");
+		valorReplace = valor.replaceAll("[R$]", "").replace(",", ".");
 		if (valor.length() >= 6) {
 			valor = valorReplace.substring(0, 1) + valorReplace.substring(1, valorReplace.length());
 		}

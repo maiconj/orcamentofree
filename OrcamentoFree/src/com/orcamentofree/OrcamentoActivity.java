@@ -26,7 +26,7 @@ import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.utils.DateUtils;
 
-public class OrcamentoActivity extends Activity  implements OnItemClickListener , Runnable  {
+public class OrcamentoActivity extends Activity  implements OnItemClickListener {
 
 	ListView listView;
 	private Button btnProdutoAdd;
@@ -50,7 +50,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	private static final int MENU_DELETE_ORCAMENTO = 3;
 	private static final int ORCAMENTO_ADD_PRODUTO = 1;
 	private static final int ORCAMENTO_EDIT_PRODUTO = 2;
-	private final int DELAY = 1000;
+	private final int DELAY = 800;
 	
 	
 
@@ -167,7 +167,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
-		Toast.makeText(this, "Orcamento Salvo com Sucesso", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
 	}
 	
 	private void saveBeforeProdutoOrcamento() {
@@ -207,16 +207,12 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 
 	private void deleteOrcamento() {
 		try {
-			Toast.makeText(this, "Por favor, aguarde...", this.DELAY).show();
-			Handler h = new Handler();
-			h.postDelayed(this, this.DELAY);
-
 			this.dbHelp.deleteOrcamentoByIdAndProdutos(this.orcamento.get_id());
 			this.orcamento = new Orcamento();
-			Toast.makeText(this, "Orcamento deletado com sucesso!",	Toast.LENGTH_LONG).show();
 			limpaCampos();
 			atualizaListaProdutos();
-
+			Toast.makeText(this, "Orcamento deletado com sucesso!",	this.DELAY).show();
+			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
@@ -243,7 +239,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
        
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-            	Log.i(LOG, "Orcamento nao deletado.");
+            	Log.i(LOG, "Orcamento não deletado.");
             }
         });
         alertDeleteOrcamento = builder.create();
@@ -336,17 +332,17 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			listView.setOnItemClickListener(this);
 			
 			//TODO
-			Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
-			for (Produto prod : produtoLst) {
-				Log.e(LOG," - _id: "+ prod.get_id());
-				Log.e(LOG," - codigo: "+ prod.getCodigo());
-				Log.e(LOG," - descricao: "+ prod.getDescricao());
-				Log.e(LOG," - preco: "+ prod.getPreco());
-				Log.e(LOG," - qtd: "+ prod.getQuantidade());
-				Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
-				Log.e(LOG,"----------------------");
-			}
-			
+//			Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
+//			for (Produto prod : produtoLst) {
+//				Log.e(LOG," - _id: "+ prod.get_id());
+//				Log.e(LOG," - codigo: "+ prod.getCodigo());
+//				Log.e(LOG," - descricao: "+ prod.getDescricao());
+//				Log.e(LOG," - preco: "+ prod.getPreco());
+//				Log.e(LOG," - qtd: "+ prod.getQuantidade());
+//				Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
+//				Log.e(LOG,"----------------------");
+//			}
+//			
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
@@ -359,11 +355,5 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		intentProduto.putExtra("ID_PRODUTO_EDIT", String.valueOf(produto.get_id()));
 		startActivityForResult(intentProduto, ORCAMENTO_EDIT_PRODUTO);
 	}
-
-	@Override
-	public void run() {
-		finish();
-	}
-
 
 }
