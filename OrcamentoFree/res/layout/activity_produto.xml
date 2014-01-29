@@ -56,19 +56,19 @@
 
         <TableRow>
 <!--             TODO -->
-            <ImageButton
-                android:id="@+id/btn_produto_foto"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent" 
-                android:layout_weight="1"
-                android:src="@drawable/ic_launcher_old"/>
-            
-<!--             <Button -->
+<!--             <ImageButton -->
 <!--                 android:id="@+id/btn_produto_foto" -->
 <!--                 android:layout_width="fill_parent" -->
-<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_height="match_parent"  -->
 <!--                 android:layout_weight="1" -->
-<!--                 android:text="@string/btn_produto_foto" /> -->
+<!--                 android:src="@drawable/ic_launcher_old"/> -->
+            
+            <Button
+                android:id="@+id/btn_produto_foto"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_produto_foto" />
         </TableRow>
 
         <TableRow>
@@ -91,6 +91,15 @@
                 android:layout_width="0dp"
                 android:text="@string/btn_produto_delete" />
         </TableRow>
-    </TableLayout>
+        
+        <TableRow>
+            <ImageView
+                android:id="@+id/img_produto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </TableRow>
+        
+</TableLayout>
 
 </ScrollView>

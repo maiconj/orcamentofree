@@ -1,34 +1,48 @@
 package com.orcamentofree;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
+import com.orcamentofree.utils.ImageUtils;
 import com.orcamentofree.utils.MascaraMonetaria;
+import com.orcamentofree.utils.SDCardUtils;
 
 public class ProdutoActivity extends Activity{
 
 	private Button btnSaveProduto;
 	private Button btnDeleteProduto;
 	private Button btnCancelProduto;
+	private Button btnAddFotoProduto;
 	
 	private EditText txtProdutoCodigo;
 	private EditText txtProdutoDescricao;
 	private EditText txtProdutoPreco;
 	private EditText txtProdutoQtd;	
+	
+	private ImageView imgProduto;
+	private Intent intentCamera;
 	
 	private static final String LOG = "DESENV";
 	private static final int MENU_SAVE_PRODUTO = 1;
@@ -39,6 +53,8 @@ public class ProdutoActivity extends Activity{
 	private Produto produto;
 	private AlertDialog alertDeleteProduto;
 	private final int DELAY = 800;
+	private File fotoFile;
+	private boolean ADD_FOTO = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +75,9 @@ public class ProdutoActivity extends Activity{
 
 		/** Ação do botão 'Cancelar Orcamento' **/
 		btnCancelProdutoAction();
+
+		/** Ação do botão 'Adicionar Foto' **/ 
+		btnAddFotoProdutoAction();
 
 	}
 
@@ -91,16 +110,29 @@ public class ProdutoActivity extends Activity{
 
 		});
 	}
+	
+	private void btnAddFotoProdutoAction(){
+		btnAddFotoProduto.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+					addFotoProduto();
+			}
+			
+		});
+		
+	}
 
 	private void carregaComponentes() {
 		this.btnSaveProduto = (Button) findViewById(R.id.btn_produto_save);
 		this.btnDeleteProduto = (Button) findViewById(R.id.btn_produto_delete);
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
+		this.btnAddFotoProduto = (Button) findViewById(R.id.btn_produto_foto);
 		
 		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
 		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
 		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
 		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
+		
+		this.imgProduto = (ImageView) findViewById(R.id.img_produto); 
 		
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 		//add mascara
@@ -118,6 +150,13 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
 			this.txtProdutoPreco.setText(this.produto.getPreco().toString());
 			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
+			//TODO
+			//carregar foto
+//			fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+//			if(fotoFile!=null){
+//				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
+//				this.imgProduto.setImageBitmap(bitmap);
+//			}
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
 				this.produto = new Produto();
@@ -140,6 +179,27 @@ public class ProdutoActivity extends Activity{
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
+	}
+	
+	private void addFotoProduto(){
+		try {
+			if(this.produto.get_id()!=0 && this.produto.getFoto().equalsIgnoreCase("SEM_FOTO")){
+				//produto salvo sem foto
+				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", "produto_"+this.produto.get_id());
+			}else if(this.produto.get_id()!=0 && !this.produto.getFoto().equalsIgnoreCase("SEM_FOTO")){
+				//produto salvo com foto
+				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+			}else{
+				//produto novo , sem/com foto
+				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", "foto_produto_temp.jpg");
+			}
+			this.intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+			startActivityForResult(this.intentCamera, 0);			
+			this.intentCamera.putExtra(MediaStore.EXTRA_OUTPUT,	Uri.fromFile(this.fotoFile));
+		} catch (Exception e) {
+			Log.e("DESENV", e.getMessage());
+		}
+
 	}
 
 	//TODO
@@ -214,7 +274,11 @@ public class ProdutoActivity extends Activity{
 			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
 			//TODO
 //			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
+			
+			
 			this.produto.setFoto("FOTO TESTE");
+			
+			
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
 		}
@@ -233,8 +297,17 @@ public class ProdutoActivity extends Activity{
 			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.set_idOrcamento(this.orcamento.get_id());
 			//TODO
-			this.produto.setFoto("FOTO TESTE");
-			
+			if(this.ADD_FOTO){
+				//trocar nome arquivo
+				File fotoTemp = SDCardUtils.getSdCardFile(this.fotoFile.getPath(), this.fotoFile.getName());  
+	            File fotoProduto = new File(this.fotoFile.getPath()+"produto_"+this.produto.get_id());  
+	            fotoProduto.createNewFile();  
+	            fotoTemp.renameTo(fotoProduto);
+	            SDCardUtils.getSdCardFile(fotoProduto.getPath(), fotoProduto.getName());
+	            this.produto.setFoto(fotoProduto.getAbsolutePath());
+			}else{
+				this.produto.setFoto("SEM_FOTO");
+			}
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
 		}
@@ -291,5 +364,21 @@ public class ProdutoActivity extends Activity{
 		}
 		return false;
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		try {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (resultCode == RESULT_OK) {
+				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	150, 150);
+				this.imgProduto.setImageBitmap(bitmap);
+				this.ADD_FOTO = true;
+			}
+		} catch (Exception e) {
+			Log.e("DESENV", e.getMessage());
+		}
+	}
+	
+	
 	
 }

@@ -22,7 +22,7 @@ import com.orcamentofree.pojo.Orcamento;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 
-	ListView listView;
+	private ListView listView;
 	private Button addOrcamentoBtn;
 	private Intent intentOrcamento;
 	private OrcamentoFreeDao dbHelp = null;
@@ -42,6 +42,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_main);
+			/** Carrega componentes **/
 			carregaComponentes();
 
 			/** Carrega Lista de orcamentos **/
@@ -102,13 +103,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		atualizaListaOrcamentos();
 	}
 
-//	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.main, menu);
-//		return true;
-//	}
-//	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
