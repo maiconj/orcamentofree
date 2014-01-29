@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -111,14 +112,12 @@ public class ProdutoActivity extends Activity{
 		});
 	}
 	
-	private void btnAddFotoProdutoAction(){
+	private void btnAddFotoProdutoAction() {
 		btnAddFotoProduto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-					addFotoProduto();
+				addFotoProduto();
 			}
-			
 		});
-		
 	}
 
 	private void carregaComponentes() {
@@ -152,11 +151,11 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
 			//TODO
 			//carregar foto
-//			fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
-//			if(fotoFile!=null){
-//				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
-//				this.imgProduto.setImageBitmap(bitmap);
-//			}
+			fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+			if(fotoFile!=null){
+				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
+				this.imgProduto.setImageBitmap(bitmap);
+			}
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
 				this.produto = new Produto();
@@ -167,13 +166,22 @@ public class ProdutoActivity extends Activity{
 	}
 	
 	private void saveProduto() {
+		boolean addProduto= false;
 		try {
 			if (this.produto.get_id() >= 1) {
 				updateProduto();
 			} else {
 				newProduto();
+				addProduto = true;
 			}
 			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
+			//TODO adiciona foto
+			if(this.ADD_FOTO && addProduto){
+				//trocar nome arquivo
+				SDCardUtils.remaneCardFile(this.fotoFile.getAbsolutePath(), this.fotoFile.getParent()+"/produto_"+this.produto.get_id()+".jpg");  
+	            this.produto.setFoto("produto_"+this.produto.get_id()+".jpg");
+	            this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
+			}			
 			Toast.makeText(this, "Produto Salvo com Sucesso", this.DELAY).show();
 			finish();
 		} catch (Exception e) {
@@ -185,7 +193,7 @@ public class ProdutoActivity extends Activity{
 		try {
 			if(this.produto.get_id()!=0 && this.produto.getFoto().equalsIgnoreCase("SEM_FOTO")){
 				//produto salvo sem foto
-				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", "produto_"+this.produto.get_id());
+				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", "produto_"+this.produto.get_id()+".jpg");
 			}else if(this.produto.get_id()!=0 && !this.produto.getFoto().equalsIgnoreCase("SEM_FOTO")){
 				//produto salvo com foto
 				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
@@ -194,12 +202,11 @@ public class ProdutoActivity extends Activity{
 				fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", "foto_produto_temp.jpg");
 			}
 			this.intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-			startActivityForResult(this.intentCamera, 0);			
 			this.intentCamera.putExtra(MediaStore.EXTRA_OUTPUT,	Uri.fromFile(this.fotoFile));
+			startActivityForResult(this.intentCamera, 0);			
 		} catch (Exception e) {
 			Log.e("DESENV", e.getMessage());
 		}
-
 	}
 
 	//TODO
@@ -219,9 +226,10 @@ public class ProdutoActivity extends Activity{
 	
 	private void deleteProduto() {
 		try {
+			SDCardUtils.deleteCardFile(Environment.getExternalStorageDirectory().getAbsolutePath()+"/orcamentoFree/"+this.produto.getFoto());
 			this.dbHelp.deleteProdutoById(this.produto.get_id());
 			this.produto = new Produto();
-			limpaCampos();
+			limpaCampos();			
 			Toast.makeText(this, "Produto deletado com sucesso!",	this.DELAY).show();
 			finish();
 		} catch (Exception e) {
@@ -276,9 +284,14 @@ public class ProdutoActivity extends Activity{
 //			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			
 			
-			this.produto.setFoto("FOTO TESTE");
-			
-			
+			//TODO adiciona foto
+			if(this.ADD_FOTO){
+				//trocar nome arquivo
+				SDCardUtils.remaneCardFile(this.fotoFile.getAbsolutePath(), this.fotoFile.getParent()+"/produto_"+this.produto.get_id()+".jpg");  
+	            this.produto.setFoto("produto_"+this.produto.get_id()+".jpg");
+			}else if(!this.ADD_FOTO && !this.produto.getFoto().equalsIgnoreCase("SEM_FOTO")){
+				this.produto.setFoto("SEM_FOTO");
+			}
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
 		}
@@ -295,19 +308,8 @@ public class ProdutoActivity extends Activity{
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
 			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
 			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
-			this.produto.set_idOrcamento(this.orcamento.get_id());
-			//TODO
-			if(this.ADD_FOTO){
-				//trocar nome arquivo
-				File fotoTemp = SDCardUtils.getSdCardFile(this.fotoFile.getPath(), this.fotoFile.getName());  
-	            File fotoProduto = new File(this.fotoFile.getPath()+"produto_"+this.produto.get_id());  
-	            fotoProduto.createNewFile();  
-	            fotoTemp.renameTo(fotoProduto);
-	            SDCardUtils.getSdCardFile(fotoProduto.getPath(), fotoProduto.getName());
-	            this.produto.setFoto(fotoProduto.getAbsolutePath());
-			}else{
-				this.produto.setFoto("SEM_FOTO");
-			}
+			this.produto.set_idOrcamento(this.orcamento.get_id());		
+			this.produto.setFoto("SEM_FOTO");
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
 		}

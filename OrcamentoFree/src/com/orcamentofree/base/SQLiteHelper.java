@@ -32,12 +32,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			"insert into orcamento (descricao, loja, data_hora,endereco) values('PS3'             ,'AMERICANAS' ,'06/06/2013 11:45','RJ');",
 			"insert into orcamento (descricao, loja, data_hora,endereco) values('TV'              ,'SUBMARINO'  ,'01/01/2014 09:32','SP');", 
 			
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD1' ,'AZULEJO CARRARA'  ,10, 12,'TESTE FOTO1',1);",
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD2' ,'AZULEJO BOMDMAI'  ,12, 12,   'TESTE FOTO2',1);",
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD3' ,'CARRARA AZULEJO'  ,15, 15,'TESTE FOTO3',2);",
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD4' ,'ARGAMASSA BOMAA'  ,5,  9,    'TESTE FOTO4',2);",
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD5' ,'REJUNTE ASDFGGG'  ,9,  3,    'TESTE FOTO5',3);",
-			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD6' ,'FRESCURA DECOLO'  ,1,  3,    'TESTE FOTO6',3);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD1' ,'AZULEJO CARRARA'  ,10, 12, 'SEM_FOTO',1);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD2' ,'AZULEJO BOMDMAI'  ,12, 12, 'SEM_FOTO',1);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD3' ,'CARRARA AZULEJO'  ,15, 15, 'SEM_FOTO',2);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD4' ,'ARGAMASSA BOMAA'  ,5,  9,  'SEM_FOTO',2);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD5' ,'REJUNTE ASDFGGG'  ,9,  3,  'SEM_FOTO',3);",
+			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento) values('COD6' ,'FRESCURA DECOLO'  ,1,  3,  'SEM_FOTO',3);",
 	
 	};
 
