@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/orcamentoSaveLayout"
+    android:background="@color/black"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    
+  
+    
+    <ImageView
+        android:id="@+id/imgOrcamentoMsg"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@color/black"
+     	android:contentDescription="@string/btn_produto_foto"
+        android:src="@drawable/ic_action_accept"/>
+
+    <TextView
+        android:id="@+id/txtOrcamentoMsg"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="7dp"
+        android:textSize="17sp"
+        android:textStyle="bold" 
+        android:textColor="@color/white"
+        android:text="@string/msg_orcamento_save"/>
+</LinearLayout>

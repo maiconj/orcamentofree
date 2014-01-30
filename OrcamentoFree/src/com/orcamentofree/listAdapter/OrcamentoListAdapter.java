@@ -1,7 +1,9 @@
 package com.orcamentofree.listAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.orcamentofree.pojo.Orcamento;
 
 public class OrcamentoListAdapter extends BaseAdapter {
@@ -37,6 +38,7 @@ public class OrcamentoListAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		try{
@@ -49,10 +51,12 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			TextView orcamento_endereco = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_endereco);
 			TextView orcamento_data = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_data);
 					
-			orcamento_descricao.setText("Desc.: " + orcmnt.getDescricao());
+			orcamento_descricao.setText(orcmnt.getDescricao());
 			orcamento_loja.setText("Loja: " + orcmnt.getLoja());
-			orcamento_endereco.setText("Endereço: " + orcmnt.getEndereco());
-			orcamento_data.setText(orcmnt.getData());
+			orcamento_endereco.setText("Endereço: " + orcmnt.getEndereco());			
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
+			orcamento_data.setText(formatter.format(formatter.parse(orcmnt.getData()).getTime()));
 			
 			return view;
 		}catch(Exception e){

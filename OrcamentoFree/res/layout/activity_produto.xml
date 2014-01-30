@@ -6,6 +6,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
+
         <TableRow>
 
             <EditText
@@ -55,51 +56,72 @@
         </TableRow>
 
         <TableRow>
-<!--             TODO -->
-<!--             <ImageButton -->
-<!--                 android:id="@+id/btn_produto_foto" -->
-<!--                 android:layout_width="fill_parent" -->
-<!--                 android:layout_height="match_parent"  -->
-<!--                 android:layout_weight="1" -->
-<!--                 android:src="@drawable/ic_launcher_old"/> -->
-            
-            <Button
+
+            <ImageButton
                 android:id="@+id/btn_produto_foto"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/btn_produto_foto" />
-        </TableRow>
+                android:background="@color/black"
+     			android:contentDescription="@string/btn_produto_foto"
+                android:src="@drawable/ic_action_camera" />
 
-        <TableRow>
-
-            <Button
+            <ImageButton
                 android:id="@+id/btn_produto_save"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:text="@string/btn_produto_save" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/black"
+     			android:contentDescription="@string/btn_produto_save"
+                android:src="@drawable/ic_action_save" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_produto_cancel"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:text="@string/btn_produto_cancel" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:contentDescription="@string/btn_produto_cancel"
+                android:src="@drawable/ic_action_undo" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_produto_delete"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:text="@string/btn_produto_delete" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:contentDescription="@string/btn_produto_delete"
+                android:src="@drawable/ic_action_discard" />
         </TableRow>
-        
+
         <TableRow>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#FF909090" />
+        </TableRow>
+
+        <TableRow>
+
             <ImageView
                 android:id="@+id/img_produto"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_name" />
         </TableRow>
-        
-</TableLayout>
+
+        <TableRow>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#FF909090" />
+        </TableRow>
+    </TableLayout>
 
 </ScrollView>

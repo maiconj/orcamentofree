@@ -8,10 +8,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
+import com.orcamentofree.utils.SDCardUtils;
 
 public class OrcamentoFreeDao {
 
@@ -79,10 +81,11 @@ public class OrcamentoFreeDao {
 
 	// Deleta o orcamento com o id fornecido e os produtos associados ao mesmo
 	public int deleteOrcamentoByIdAndProdutos(long id) {
-		// Delete Produto
+		// Delete Produto e suas fotos
 		List<Produto> produtos = new ArrayList<Produto>();
 		produtos.addAll(this.findProdutoByOrcamento(this.findOrcamentoById(id)));
 		for (Produto produto : produtos) {
+			SDCardUtils.deleteCardFile(Environment.getExternalStorageDirectory().getAbsolutePath()+"/orcamentoFree/"+produto.getFoto());
 			this.deleteProdutoById(produto.get_id());
 		}
 

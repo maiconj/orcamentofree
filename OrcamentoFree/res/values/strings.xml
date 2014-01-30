@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">OrçamentoFacil</string>
+    <string name="app_name">Orçamento</string>
     <string name="action_settings">Settings</string>
 
 	<!-- MAIN -->
@@ -17,13 +17,12 @@
     <string name="txt_orcamento_descricao">Descrição</string>
     <string name="txt_orcamento_endereco">Endereço</string>
     <string name="txt_orcamento_loja">Loja</string>
-    <string name="btn_produto_add">+ Produto</string>
-    <string name="popup_valida_orcamento_title">Atenção!</string>
-    <string name="popup_valida_orcamento_message">Campos obrigatórios NÂO preenchidos</string>
-    <string name="popup_valida_orcamento_btn">Fechar</string>
+    <string name="btn_produto_add">Adicionar Produto</string>
     <string name="menu_save_orcamento">Salvar</string>
     <string name="menu_cancel_orcamento">Cancelar</string>
     <string name="menu_delete_orcamento">Excluir</string>
+    <string name="msg_valid_message">Campos obrigatórios NÂO preenchidos</string>
+    <string name="msg_orcamento_save">Orçamento salvo com sucesso!</string>
 
     <!-- PRODUTO -->
     <string name="title_activity_produto">Produto</string>
@@ -39,6 +38,7 @@
     <string name="menu_save_produto">Salvar</string>
     <string name="menu_cancel_produto">Cancelar</string>
     <string name="menu_delete_produto">Excluir</string>
+    <string name="msg_produto_save">Produto salvo com sucesso!</string>
 
     
     

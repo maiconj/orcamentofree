@@ -9,13 +9,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,10 +30,10 @@ import com.orcamentofree.utils.DateUtils;
 public class OrcamentoActivity extends Activity  implements OnItemClickListener {
 
 	ListView listView;
-	private Button btnProdutoAdd;
-	private Button btnOrcamentoSave;
-	private Button btnOrcamentoDelete;
-	private Button btnOrcamentoCancel;
+	private ImageButton btnProdutoAdd;
+	private ImageButton btnOrcamentoSave;
+	private ImageButton btnOrcamentoDelete;
+	private ImageButton btnOrcamentoCancel;
 
 	private EditText txtOrcamentoDescricao;
 	private EditText txtOrcamentoLoja;
@@ -132,10 +134,10 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 
 	private void carregaComponentes() {
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
-		this.btnProdutoAdd = (Button) findViewById(R.id.btn_produto_add);
-		this.btnOrcamentoSave = (Button) findViewById(R.id.btn_orcamento_save);
-		this.btnOrcamentoDelete = (Button) findViewById(R.id.btn_orcamento_delete);
-		this.btnOrcamentoCancel = (Button) findViewById(R.id.btn_orcamento_cancel);
+		this.btnProdutoAdd = (ImageButton) findViewById(R.id.btn_produto_add);
+		this.btnOrcamentoSave = (ImageButton) findViewById(R.id.btn_orcamento_save);
+		this.btnOrcamentoDelete = (ImageButton) findViewById(R.id.btn_orcamento_delete);
+		this.btnOrcamentoCancel = (ImageButton) findViewById(R.id.btn_orcamento_cancel);
 		this.txtOrcamentoDescricao = (EditText) findViewById(R.id.txt_orcamento_descricao);
 		this.txtOrcamentoLoja = (EditText) findViewById(R.id.txt_orcamento_loja);
 		this.txtOrcamentoEndereco = (EditText) findViewById(R.id.txt_orcamento_endereco);
@@ -166,9 +168,18 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
-		Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
+		
+		 LayoutInflater inflater = getLayoutInflater();
+		    View view = inflater.inflate(R.layout.orcamento_save_msg, (ViewGroup) findViewById(R.id.orcamentoSaveLayout));
+		    Toast toast = new Toast(this);
+		    toast.setView(view);
+		    toast.setDuration(this.DELAY);
+		    toast.show();
+		
+		//Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
 	}
 	
+	/**Metodo usado para salvar o Orcamento quando o usuario clicar no botão "Adicionar Produto'*/
 	private void saveBeforeProdutoOrcamento() {
 		try {
 			if (this.orcamento.get_id() >= 1) {
@@ -227,6 +238,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 
 	private void exibeMensagemDelete(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_action_warning);
         builder.setTitle("Excluir Orçamento");
         builder.setMessage("Isto irá deletar todos os produtos associados.\nVocê tem certeza?");
     

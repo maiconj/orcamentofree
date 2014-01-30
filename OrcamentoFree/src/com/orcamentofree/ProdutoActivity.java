@@ -1,9 +1,6 @@
 package com.orcamentofree;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,8 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,10 +29,10 @@ import com.orcamentofree.utils.SDCardUtils;
 
 public class ProdutoActivity extends Activity{
 
-	private Button btnSaveProduto;
-	private Button btnDeleteProduto;
-	private Button btnCancelProduto;
-	private Button btnAddFotoProduto;
+	private ImageButton btnSaveProduto;
+	private ImageButton btnDeleteProduto;
+	private ImageButton btnCancelProduto;
+	private ImageButton btnAddFotoProduto;
 	
 	private EditText txtProdutoCodigo;
 	private EditText txtProdutoDescricao;
@@ -121,10 +118,10 @@ public class ProdutoActivity extends Activity{
 	}
 
 	private void carregaComponentes() {
-		this.btnSaveProduto = (Button) findViewById(R.id.btn_produto_save);
-		this.btnDeleteProduto = (Button) findViewById(R.id.btn_produto_delete);
-		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
-		this.btnAddFotoProduto = (Button) findViewById(R.id.btn_produto_foto);
+		this.btnSaveProduto = (ImageButton) findViewById(R.id.btn_produto_save);
+		this.btnDeleteProduto = (ImageButton) findViewById(R.id.btn_produto_delete);
+		this.btnCancelProduto = (ImageButton) findViewById(R.id.btn_produto_cancel);
+		this.btnAddFotoProduto = (ImageButton) findViewById(R.id.btn_produto_foto);
 		
 		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
 		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
@@ -248,6 +245,7 @@ public class ProdutoActivity extends Activity{
 	
 	private void exibeMensagemDelete(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_action_warning);
         builder.setTitle("Excluir Produto");
         builder.setMessage("Isto irá excluir o produto selecionado.\nVocê tem certeza?");
     
@@ -380,7 +378,4 @@ public class ProdutoActivity extends Activity{
 			Log.e("DESENV", e.getMessage());
 		}
 	}
-	
-	
-	
 }
