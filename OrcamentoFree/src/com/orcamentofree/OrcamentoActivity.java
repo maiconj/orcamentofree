@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
@@ -169,12 +170,16 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			Log.e(LOG, e.getMessage());
 		}
 		
-		 LayoutInflater inflater = getLayoutInflater();
-		    View view = inflater.inflate(R.layout.orcamento_save_msg, (ViewGroup) findViewById(R.id.orcamentoSaveLayout));
-		    Toast toast = new Toast(this);
-		    toast.setView(view);
-		    toast.setDuration(this.DELAY);
-		    toast.show();
+		
+		TextView msg = (TextView) findViewById(R.id.txtOrcamentoMsg);
+		msg.setText(R.string.msg_orcamento_save);
+
+		LayoutInflater inflater = getLayoutInflater();
+		View view = inflater.inflate(R.layout.orcamento_save_msg,(ViewGroup) findViewById(R.id.orcamentoSaveLayout));
+		Toast toast = new Toast(this);
+		toast.setView(view);
+		toast.setDuration(this.DELAY);
+		toast.show();
 		
 		//Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
 	}
@@ -221,7 +226,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			this.orcamento = new Orcamento();
 			limpaCampos();
 			atualizaListaProdutos();
-			Toast.makeText(this, "Orcamento deletado com sucesso!",	this.DELAY).show();
+			Toast.makeText(this, "Orcamento deletado com sucesso !",	this.DELAY).show();
 			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
@@ -232,7 +237,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		if (this.orcamento.get_id() >= 1) {
 			exibeMensagemDelete();
 		} else {
-			Toast.makeText(this, "Você deve selecionar um orcamento!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Você deve selecionar um orcamento !", Toast.LENGTH_LONG).show();
 		}
 	}
 

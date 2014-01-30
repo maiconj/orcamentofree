@@ -22,7 +22,10 @@
     <string name="menu_cancel_orcamento">Cancelar</string>
     <string name="menu_delete_orcamento">Excluir</string>
     <string name="msg_valid_message">Campos obrigatórios NÂO preenchidos</string>
-    <string name="msg_orcamento_save">Orçamento salvo com sucesso!</string>
+    <string name="msg_orcamento_save">Orçamento salvo com sucesso !</string>
+    <string name="msg_orcamento_delete">Orcamento deletado com sucesso !</string>
+    <string name="msg_orcamento_not_selected">Você deve selecionar um orcamento !</string>
+    <string name="msg_orcamento_cancel_operation">Operação cancelada, preencha os campos!</string>
 
     <!-- PRODUTO -->
     <string name="title_activity_produto">Produto</string>
