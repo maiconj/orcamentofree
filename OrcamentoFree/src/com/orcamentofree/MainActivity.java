@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.listAdapter.OrcamentoListAdapter;
@@ -25,6 +23,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private ListView listView;
 	private Button addOrcamentoBtn;
 	private Intent intentOrcamento;
+	private Intent intentOrcamentoHelp;
 	private OrcamentoFreeDao dbHelp = null;
 	private static final String LOG = "DESENV";
 	private static final int ADD_ORCAMENTO = 0;
@@ -33,6 +32,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private static final int SAVE_ORCAMENTO = 3;
 
 	private static final int MENU_ADD_ORCAMENTO = 1;
+	private static final int MENU_AJUDA = 3;
 	private static final int MENU_SAIR = 2;
 	
 	
@@ -88,6 +88,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		startActivityForResult(intentOrcamento, requestCode);
 	}
 
+	private void initOrcamentoAjuda() {
+		this.intentOrcamentoHelp = new Intent(this, OrcamentoHelpActivity.class);
+		startActivity(intentOrcamentoHelp);
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Orcamento orc = (Orcamento) listView.getAdapter().getItem(arg2);
@@ -106,8 +111,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		MenuItem item = menu.add(0, MENU_ADD_ORCAMENTO, 0, "Novo Orçamento");
-		item = menu.add(0, MENU_SAIR, 0, "Sair");
+		MenuItem item = menu.add(0, MENU_ADD_ORCAMENTO, 0, "Novo Orçamento").setIcon(R.drawable.ic_action_new);
+		item = menu.add(0, MENU_AJUDA, 0, "Ajuda").setIcon(R.drawable.ic_action_help);
+		item = menu.add(0, MENU_SAIR, 0, "Sair").setIcon(R.drawable.ic_action_remove);
 		return true;
 	}
 
@@ -117,6 +123,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		case MENU_ADD_ORCAMENTO:
 			initOrcamentoADD(ADD_ORCAMENTO);
 			return true;
+		case MENU_AJUDA:
+			initOrcamentoAjuda();
+			return true;			
 		case MENU_SAIR:
 			finish();
 			return true;

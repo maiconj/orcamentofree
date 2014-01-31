@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Orçamento</string>
+    <string name="app_name">OrçamentoFree</string>
     <string name="action_settings">Settings</string>
 
 	<!-- MAIN -->
@@ -10,22 +10,21 @@
     <string name="menu_sair_orcamento">Sair</string>
     
     <!-- ORCAMENTO -->
-    <string name="title_activity_orcamento">Orcamento</string>
     <string name="btn_orcamento_save">Salvar</string>
     <string name="btn_orcamento_delete">Excluir</string>
-    <string name="btn_orcamento_cancel">Cancelar</string>
+    <string name="btn_orcamento_cancel">Voltar</string>
     <string name="txt_orcamento_descricao">Descrição</string>
     <string name="txt_orcamento_endereco">Endereço</string>
     <string name="txt_orcamento_loja">Loja</string>
-    <string name="btn_produto_add">Adicionar Produto</string>
+    <string name="btn_produto_add">+ Produto</string>
     <string name="menu_save_orcamento">Salvar</string>
-    <string name="menu_cancel_orcamento">Cancelar</string>
+    <string name="menu_cancel_orcamento">Voltar</string>
     <string name="menu_delete_orcamento">Excluir</string>
     <string name="msg_valid_message">Campos obrigatórios NÂO preenchidos</string>
-    <string name="msg_orcamento_save">Orçamento salvo com sucesso !</string>
-    <string name="msg_orcamento_delete">Orcamento deletado com sucesso !</string>
-    <string name="msg_orcamento_not_selected">Você deve selecionar um orcamento !</string>
-    <string name="msg_orcamento_cancel_operation">Operação cancelada, preencha os campos!</string>
+    <string name="msg_orcamento_save">Orçamento salvo !</string>
+    <string name="msg_orcamento_delete">Orcamento deletado !</string>
+    <string name="msg_orcamento_not_selected">Selecione um orcamento !</string>
+    <string name="msg_orcamento_cancel_operation">Ops..! Preencha os campos.</string>
 
     <!-- PRODUTO -->
     <string name="title_activity_produto">Produto</string>
@@ -33,17 +32,21 @@
     <string name="txt_produto_codigo">Código</string>
     <string name="txt_produto_preco">Preço</string>
     <string name="txt_produto_qtd">Quantidade</string>
-    <string name="btn_produto_foto">Adicionar Foto</string>
+    <string name="btn_produto_foto">+ Foto</string>
     <string name="btn_produto_save">Salvar</string>
     <string name="btn_produto_delete">Excluir</string>
-    <string name="btn_produto_cancel">Cancelar</string>
+    <string name="btn_produto_cancel">Voltar</string>
     <string name="title_activity_intro">IntroActivity</string>
     <string name="menu_save_produto">Salvar</string>
-    <string name="menu_cancel_produto">Cancelar</string>
+    <string name="menu_cancel_produto">Voltar</string>
     <string name="menu_delete_produto">Excluir</string>
-    <string name="msg_produto_save">Produto salvo com sucesso!</string>
+    <string name="msg_produto_save">Produto salvo !</string>
 
-    
-    
+    <!-- TITULOS -->
+    <string name="title_activity_intro">OrçamentoFree</string>
+    <string name="title_activity_main">OrçamentoFree - Orçamentos</string>
+    <string name="title_activity_orcamento_help">OrçamentoFree - Help</string>
+    <string name="title_activity_orcamento">OrçamentoFree - Orçamento</string>
+    <string name="title_activity_produto">OrçamentoFree - Produto</string>
 
 </resources>

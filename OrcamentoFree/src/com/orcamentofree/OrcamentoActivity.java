@@ -16,10 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
@@ -31,10 +31,10 @@ import com.orcamentofree.utils.DateUtils;
 public class OrcamentoActivity extends Activity  implements OnItemClickListener {
 
 	ListView listView;
-	private ImageButton btnProdutoAdd;
-	private ImageButton btnOrcamentoSave;
-	private ImageButton btnOrcamentoDelete;
-	private ImageButton btnOrcamentoCancel;
+	private Button btnProdutoAdd;
+	private Button btnOrcamentoSave;
+	private Button btnOrcamentoDelete;
+	private Button btnOrcamentoCancel;
 
 	private EditText txtOrcamentoDescricao;
 	private EditText txtOrcamentoLoja;
@@ -52,6 +52,11 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	private static final int MENU_DELETE_ORCAMENTO = 3;
 	private static final int ORCAMENTO_ADD_PRODUTO = 1;
 	private static final int ORCAMENTO_EDIT_PRODUTO = 2;
+	
+	private static final String SAVE = "SAVE";
+	private static final String DELETE = "DELETE";
+	private static final String FIELDS_NULL = "FIELDS_NULL";
+	private static final String ORC_NULL = "ORC_NULL";
 	private final int DELAY = 800;
 	
 	
@@ -135,10 +140,10 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 
 	private void carregaComponentes() {
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
-		this.btnProdutoAdd = (ImageButton) findViewById(R.id.btn_produto_add);
-		this.btnOrcamentoSave = (ImageButton) findViewById(R.id.btn_orcamento_save);
-		this.btnOrcamentoDelete = (ImageButton) findViewById(R.id.btn_orcamento_delete);
-		this.btnOrcamentoCancel = (ImageButton) findViewById(R.id.btn_orcamento_cancel);
+		this.btnProdutoAdd = (Button) findViewById(R.id.btn_produto_add);
+		this.btnOrcamentoSave = (Button) findViewById(R.id.btn_orcamento_save);
+		this.btnOrcamentoDelete = (Button) findViewById(R.id.btn_orcamento_delete);
+		this.btnOrcamentoCancel = (Button) findViewById(R.id.btn_orcamento_cancel);
 		this.txtOrcamentoDescricao = (EditText) findViewById(R.id.txt_orcamento_descricao);
 		this.txtOrcamentoLoja = (EditText) findViewById(R.id.txt_orcamento_loja);
 		this.txtOrcamentoEndereco = (EditText) findViewById(R.id.txt_orcamento_endereco);
@@ -169,19 +174,27 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
-		
-		
-		TextView msg = (TextView) findViewById(R.id.txtOrcamentoMsg);
-		msg.setText(R.string.msg_orcamento_save);
-
+		showMessage(SAVE);
+		//Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
+	}
+	
+	private void showMessage(String typeMsg) {
+		View view = null;
 		LayoutInflater inflater = getLayoutInflater();
-		View view = inflater.inflate(R.layout.orcamento_save_msg,(ViewGroup) findViewById(R.id.orcamentoSaveLayout));
+
+		if (typeMsg.compareTo(SAVE) == 0) {
+			view = inflater.inflate(R.layout.msg_orcamento_save, (ViewGroup) findViewById(R.id.orcamentoSaveLayout));
+		} else if (typeMsg.compareTo(DELETE) == 0) {
+			view = inflater.inflate(R.layout.msg_orcamento_delete,	(ViewGroup) findViewById(R.id.orcamentoDeleteLayout));
+		} else if (typeMsg.compareTo(FIELDS_NULL) == 0) {
+			view = inflater.inflate(R.layout.msg_orcamento_campos_null,(ViewGroup) findViewById(R.id.orcamentoFieldsNullLayout));
+		} else if (typeMsg.compareTo(ORC_NULL) == 0) {
+			view = inflater.inflate(R.layout.msg_orcamento_confirm, (ViewGroup) findViewById(R.id.orcamentoFieldsNullLayout));
+		}
 		Toast toast = new Toast(this);
 		toast.setView(view);
 		toast.setDuration(this.DELAY);
 		toast.show();
-		
-		//Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
 	}
 	
 	/**Metodo usado para salvar o Orcamento quando o usuario clicar no botão "Adicionar Produto'*/
@@ -226,7 +239,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			this.orcamento = new Orcamento();
 			limpaCampos();
 			atualizaListaProdutos();
-			Toast.makeText(this, "Orcamento deletado com sucesso !",	this.DELAY).show();
+			showMessage(DELETE);
 			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
@@ -237,13 +250,13 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		if (this.orcamento.get_id() >= 1) {
 			exibeMensagemDelete();
 		} else {
-			Toast.makeText(this, "Você deve selecionar um orcamento !", Toast.LENGTH_LONG).show();
+			showMessage(ORC_NULL);
 		}
 	}
 
 	private void exibeMensagemDelete(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.ic_action_warning);
+		builder.setIcon(R.drawable.ic_action_error_white);
         builder.setTitle("Excluir Orçamento");
         builder.setMessage("Isto irá deletar todos os produtos associados.\nVocê tem certeza?");
     
@@ -277,7 +290,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		if (this.txtOrcamentoDescricao.getText().toString().length()<=0 
 				|| this.txtOrcamentoLoja.getText().toString().length()<=0
 				|| this.txtOrcamentoLoja.getText().toString().length()<=0) {
-			Toast.makeText(this, "Operação cancelada, preencha os campos!",	Toast.LENGTH_LONG).show();
+			showMessage(FIELDS_NULL);
 			erro = false;
 		}
 		return erro;
@@ -307,9 +320,9 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		MenuItem item = menu.add(0, MENU_SAVE_ORCAMENTO, 0, "Salvar");
-		item = menu.add(0, MENU_CANCEL_ORCAMENTO, 0, "Cancelar");
-		item = menu.add(0, MENU_DELETE_ORCAMENTO, 0, "Excluir");
+		MenuItem item = menu.add(0, MENU_SAVE_ORCAMENTO, 0, "Salvar").setIcon(R.drawable.ic_action_save);
+		item = menu.add(0, MENU_CANCEL_ORCAMENTO, 0, "Voltar").setIcon(R.drawable.ic_action_undo);
+		item = menu.add(0, MENU_DELETE_ORCAMENTO, 0, "Excluir").setIcon(R.drawable.ic_action_discard);
 		return true;
 	}
 
@@ -346,19 +359,6 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			listView = (ListView) findViewById(R.id.produtoList);
 			listView.setAdapter(produtoAdapter);
 			listView.setOnItemClickListener(this);
-			
-			//TODO
-//			Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
-//			for (Produto prod : produtoLst) {
-//				Log.e(LOG," - _id: "+ prod.get_id());
-//				Log.e(LOG," - codigo: "+ prod.getCodigo());
-//				Log.e(LOG," - descricao: "+ prod.getDescricao());
-//				Log.e(LOG," - preco: "+ prod.getPreco());
-//				Log.e(LOG," - qtd: "+ prod.getQuantidade());
-//				Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
-//				Log.e(LOG,"----------------------");
-//			}
-//			
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
