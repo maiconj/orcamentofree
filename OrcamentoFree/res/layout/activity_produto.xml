@@ -45,6 +45,14 @@
                 android:inputType="numberDecimal"
                 android:maxLength="6" />
 
+              <Spinner
+                android:id="@+id/spn_um_produto"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:prompt="@string/txt_produto_um" />
+            
+            
             <EditText
                 android:id="@+id/txt_produto_preco"
                 android:layout_width="0dp"
@@ -96,7 +104,6 @@
                 android:drawableTop="@drawable/ic_action_discard"
                 android:text="@string/btn_produto_delete"
                 android:textColor="@color/white" />
-            
         </TableRow>
 
         <TableRow>

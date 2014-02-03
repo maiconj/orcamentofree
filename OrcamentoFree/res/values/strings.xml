@@ -27,16 +27,15 @@
     <string name="msg_orcamento_cancel_operation">Ops..! Preencha os campos.</string>
 
     <!-- PRODUTO -->
-    <string name="title_activity_produto">Produto</string>
     <string name="txt_produto_descricao">Descrição</string>
     <string name="txt_produto_codigo">Código</string>
     <string name="txt_produto_preco">Preço</string>
     <string name="txt_produto_qtd">Quantidade</string>
+    <string name="txt_produto_um">Unidade de Medida</string>
     <string name="btn_produto_foto">+ Foto</string>
     <string name="btn_produto_save">Salvar</string>
     <string name="btn_produto_delete">Excluir</string>
     <string name="btn_produto_cancel">Voltar</string>
-    <string name="title_activity_intro">IntroActivity</string>
     <string name="menu_save_produto">Salvar</string>
     <string name="menu_cancel_produto">Voltar</string>
     <string name="menu_delete_produto">Excluir</string>

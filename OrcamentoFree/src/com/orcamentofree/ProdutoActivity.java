@@ -15,9 +15,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
@@ -39,6 +42,8 @@ public class ProdutoActivity extends Activity{
 	private EditText txtProdutoPreco;
 	private EditText txtProdutoQtd;	
 	
+	private Spinner umProduto;
+	
 	private ImageView imgProduto;
 	private Intent intentCamera;
 	
@@ -54,6 +59,9 @@ public class ProdutoActivity extends Activity{
 	private File fotoFile;
 	private boolean ADD_FOTO = false;
 
+	
+	private String[] umProdutos = {"UN.","QTD.", "KG.","MT"};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,7 +130,25 @@ public class ProdutoActivity extends Activity{
 		this.btnDeleteProduto = (Button) findViewById(R.id.btn_produto_delete);
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
 		this.btnAddFotoProduto = (Button) findViewById(R.id.btn_produto_foto);
-		
+		this.umProduto = (Spinner) findViewById(R.id.spn_um_produto);
+
+		ArrayAdapter<String> adapterUmProduto = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, umProdutos);
+		adapterUmProduto.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		umProduto.setAdapter(adapterUmProduto);
+		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView  arg0, View arg1, int posicao, long arg3) {
+				String um  = umProdutos[posicao];
+				Log.e(LOG, um);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView arg0) {
+			}
+
+		});
+
 		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
 		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
 		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
