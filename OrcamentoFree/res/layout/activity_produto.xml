@@ -48,7 +48,7 @@
               <Spinner
                 android:id="@+id/spn_um_produto"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="49dp"
                 android:layout_weight="1"
                 android:prompt="@string/txt_produto_um" />
             

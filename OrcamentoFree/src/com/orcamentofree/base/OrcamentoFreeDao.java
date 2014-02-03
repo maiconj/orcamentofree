@@ -212,6 +212,7 @@ public class OrcamentoFreeDao {
 		values.put("preco", produto.getPreco());
 		values.put("foto", produto.getFoto());
 		values.put("id_orcamento", produto.get_idOrcamento());
+		values.put("unidade_medida", produto.getUnidadeMedida());
 		long id = db.insert(NOME_TABELA_PRODUTO, "", values);
 		return id;
 	}
@@ -225,6 +226,7 @@ public class OrcamentoFreeDao {
 		values.put("preco", produto.getPreco());
 		values.put("foto", produto.getFoto());
 		values.put("id_orcamento", produto.get_idOrcamento());
+		values.put("unidade_medida", produto.getUnidadeMedida());
 		String _id = String.valueOf(produto.get_id());
 		String where = "_id=?";
 		String[] whereArgs = new String[] { _id };
@@ -257,6 +259,7 @@ public class OrcamentoFreeDao {
 			produto.setPreco(c.getFloat(4));
 			produto.setFoto(c.getString(5));
 			produto.set_idOrcamento(c.getInt(6));
+			produto.setUnidadeMedida(c.getString(7));
 			return produto;
 		}
 		return null;
@@ -280,6 +283,7 @@ public class OrcamentoFreeDao {
 				produto.setPreco(c.getFloat(4));
 				produto.setFoto(c.getString(5));
 				produto.set_idOrcamento(c.getInt(6));
+				produto.setUnidadeMedida(c.getString(7));
 			} while (c.moveToNext());
 		}
 		return produtos;	
@@ -313,6 +317,7 @@ public class OrcamentoFreeDao {
 				produto.setPreco(c.getFloat(4));
 				produto.setFoto(c.getString(5));
 				produto.set_idOrcamento(c.getInt(6));
+				produto.setUnidadeMedida(c.getString(7));
 			} while (c.moveToNext());
 		}
 		return produtos;
@@ -336,6 +341,7 @@ public class OrcamentoFreeDao {
 				produto.setPreco(c.getFloat(4));
 				produto.setFoto(c.getString(5));
 				produto.set_idOrcamento(c.getInt(6));
+				produto.setUnidadeMedida(c.getString(7));
 			}
 		} catch (SQLException e) {
 			Log.e(LOG, "Erro ao buscar o produto pela descricao: " + e.toString());

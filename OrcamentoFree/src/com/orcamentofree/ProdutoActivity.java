@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
+import com.orcamentofree.pojo.UnidadeMedida;
 import com.orcamentofree.utils.ImageUtils;
 import com.orcamentofree.utils.MascaraMonetaria;
 import com.orcamentofree.utils.SDCardUtils;
@@ -54,13 +55,13 @@ public class ProdutoActivity extends Activity{
 	private OrcamentoFreeDao dbHelp = null;
 	private Orcamento orcamento;
 	private Produto produto;
+	private String unidadeMedida;
 	private AlertDialog alertDeleteProduto;
-	private final int DELAY = 800;
+	private final int DELAY = 700;
 	private File fotoFile;
-	private boolean ADD_FOTO = false;
-
+	private boolean ADD_FOTO = false;	
 	
-	private String[] umProdutos = {"UN.","QTD.", "KG.","MT"};
+	//private String[] umProdutos = {"UN.","QTD.", "KG.","MT"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,9 @@ public class ProdutoActivity extends Activity{
 
 		/** Carrega PRODUTO selecionado**/
 		carregaProduto();
+		
+		/** Ação do Spinner Unidade de Medida*/
+		listenerUnidadeMedida();
 		
 		/** Ação do botão 'Salvar Orcamento' **/
 		btnSaveProdutoAction();
@@ -131,38 +135,22 @@ public class ProdutoActivity extends Activity{
 		this.btnCancelProduto = (Button) findViewById(R.id.btn_produto_cancel);
 		this.btnAddFotoProduto = (Button) findViewById(R.id.btn_produto_foto);
 		this.umProduto = (Spinner) findViewById(R.id.spn_um_produto);
-
-		ArrayAdapter<String> adapterUmProduto = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, umProdutos);
-		adapterUmProduto.setDropDownViewResource(android.R.layout.simple_spinner_item);
-		umProduto.setAdapter(adapterUmProduto);
-		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView  arg0, View arg1, int posicao, long arg3) {
-				String um  = umProdutos[posicao];
-				Log.e(LOG, um);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView arg0) {
-			}
-
-		});
-
+		
 		this.txtProdutoCodigo =  (EditText) findViewById(R.id.txt_produto_codigo);
 		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
 		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
 		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
 		
-		this.imgProduto = (ImageView) findViewById(R.id.img_produto); 
+		carregaSpinnerUnidadeMedida();
 		
+		this.imgProduto = (ImageView) findViewById(R.id.img_produto); 
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 		//add mascara
 		//TODO
 		//txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
 		
 	}
-
+	
 	private void carregaProduto() {
 		Intent it = getIntent();
 		if (it.getStringExtra("ID_PRODUTO_EDIT") != null) {
@@ -179,6 +167,7 @@ public class ProdutoActivity extends Activity{
 				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
 				this.imgProduto.setImageBitmap(bitmap);
 			}
+			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
 				this.produto = new Produto();
@@ -304,6 +293,7 @@ public class ProdutoActivity extends Activity{
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
 			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
 			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			this.produto.setUnidadeMedida(unidadeMedida);
 			//TODO
 //			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			
@@ -334,9 +324,35 @@ public class ProdutoActivity extends Activity{
 			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.set_idOrcamento(this.orcamento.get_id());		
 			this.produto.setFoto("SEM_FOTO");
+			this.produto.setUnidadeMedida(unidadeMedida);
 		} catch (Exception e) {
 			Log.e(LOG,e.getMessage());
 		}
+	}
+	
+	//Spinner
+	private void listenerUnidadeMedida() {
+		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int posicao, long arg3) {
+				addUnidadeMedidaProduto(UnidadeMedida.getSigla(posicao));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+	}
+	
+	private void addUnidadeMedidaProduto(String um){
+		this.unidadeMedida = um;
+	}
+	
+	
+	private void carregaSpinnerUnidadeMedida(){
+		ArrayAdapter<String> adapterUmProduto = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, UnidadeMedida.getValues());
+		adapterUmProduto.setDropDownViewResource(R.layout.unidade_medida_spinner_list);
+		umProduto.setAdapter(adapterUmProduto);
 	}
 	
 	public boolean camposValidos() {

@@ -8,15 +8,17 @@ public class Produto {
 	private Float quantidade;
 	private Float preco;
 	private String foto;
+	private String unidadeMedida;
+	
 	private int id_orcamento;
 
-	public static String[] colunas = new String[] { "_id", "codigo", "descricao", "quantidade", "preco", "foto", "id_orcamento" };
+	public static String[] colunas = new String[] { "_id", "codigo", "descricao", "quantidade", "preco", "foto", "id_orcamento" , "unidade_medida" };
 
 	public Produto() {
 	}
 
 	public Produto(int id, String codigo, String descricao, Float quantidade,
-			Float preco, String foto, int idOrcamento) {
+			Float preco, String foto, int idOrcamento, String unidadeMedida) {
 		super();
 		this.set_id(id);
 		this.setCodigo(codigo);
@@ -25,10 +27,11 @@ public class Produto {
 		this.setPreco(preco);
 		this.setFoto(foto);
 		this.set_idOrcamento(idOrcamento);
+		this.setUnidadeMedida(unidadeMedida);
 	}
 
 	public Produto(String codigo, String descricao, String quantidade,
-			String preco) {
+			String preco, String unidadeMedida) {
 		super();
 		this.setCodigo(codigo);
 		this.setDescricao(descricao);
@@ -44,10 +47,11 @@ public class Produto {
 		} else {
 			this.setPreco(Float.valueOf(preco));
 		}
+		this.setUnidadeMedida(unidadeMedida);
 	}
 
 	public Produto(String id, String codigo, String descricao,
-			String quantidade, String preco, String foto, String idOrcamento) {
+			String quantidade, String preco, String foto, String idOrcamento, String unidadeMedida) {
 		super();
 
 		if (id == null ) {
@@ -77,6 +81,7 @@ public class Produto {
 			this.set_idOrcamento(Integer.valueOf(idOrcamento));
 		}
 		this.setFoto(foto);
+		this.setUnidadeMedida(unidadeMedida);
 
 	}
 
@@ -134,6 +139,14 @@ public class Produto {
 
 	public void set_idOrcamento(int idOrcamento) {
 		this.id_orcamento = idOrcamento;
+	}
+	
+	public String getUnidadeMedida() {
+		return unidadeMedida;
+	}
+
+	public void setUnidadeMedida(String unidadeMedida) {
+		this.unidadeMedida = unidadeMedida;
 	}
 
 	public String getTotal() {
