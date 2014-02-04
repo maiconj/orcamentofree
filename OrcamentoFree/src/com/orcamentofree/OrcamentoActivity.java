@@ -56,8 +56,8 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	private static final String SAVE = "SAVE";
 	private static final String DELETE = "DELETE";
 	private static final String FIELDS_NULL = "FIELDS_NULL";
-	private static final String ORC_NULL = "ORC_NULL";
-	private final int DELAY = 800;
+	private static final String ORCAMENTO_NULL = "ORC_NULL";
+	private final int DELAY = 300;
 	
 	
 
@@ -175,7 +175,6 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			Log.e(LOG, e.getMessage());
 		}
 		showMessage(SAVE);
-		//Toast.makeText(this, "Orcamento Salvo com Sucesso", this.DELAY).show();
 	}
 	
 	private void showMessage(String typeMsg) {
@@ -188,8 +187,8 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			view = inflater.inflate(R.layout.msg_orcamento_delete,	(ViewGroup) findViewById(R.id.orcamentoDeleteLayout));
 		} else if (typeMsg.compareTo(FIELDS_NULL) == 0) {
 			view = inflater.inflate(R.layout.msg_orcamento_campos_null,(ViewGroup) findViewById(R.id.orcamentoFieldsNullLayout));
-		} else if (typeMsg.compareTo(ORC_NULL) == 0) {
-			view = inflater.inflate(R.layout.msg_orcamento_confirm, (ViewGroup) findViewById(R.id.orcamentoFieldsNullLayout));
+		} else if (typeMsg.compareTo(ORCAMENTO_NULL) == 0) {
+			view = inflater.inflate(R.layout.msg_orcamento_not_selected, (ViewGroup) findViewById(R.id.orcamentoFieldsNullLayout));
 		}
 		Toast toast = new Toast(this);
 		toast.setView(view);
@@ -250,7 +249,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		if (this.orcamento.get_id() >= 1) {
 			exibeMensagemDelete();
 		} else {
-			showMessage(ORC_NULL);
+			showMessage(ORCAMENTO_NULL);
 		}
 	}
 
@@ -338,7 +337,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			finish();
 			return true;
 		case MENU_DELETE_ORCAMENTO:
-			deleteOrcamento();
+			confirmaOrcamentoSelecionado();
 			return true;
 		}
 		return false;
