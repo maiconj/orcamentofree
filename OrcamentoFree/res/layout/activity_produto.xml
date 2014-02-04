@@ -45,14 +45,13 @@
                 android:inputType="numberDecimal"
                 android:maxLength="6" />
 
-              <Spinner
+            <Spinner
                 android:id="@+id/spn_um_produto"
                 android:layout_width="0dp"
                 android:layout_height="49dp"
                 android:layout_weight="1"
                 android:prompt="@string/txt_produto_um" />
-            
-            
+
             <EditText
                 android:id="@+id/txt_produto_preco"
                 android:layout_width="0dp"
@@ -122,17 +121,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/border"
                 android:contentDescription="@string/app_name" />
-        </TableRow>
-
-        <TableRow>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="#FF909090" />
         </TableRow>
     </TableLayout>
 

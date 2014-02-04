@@ -40,6 +40,9 @@
     <string name="menu_cancel_produto">Voltar</string>
     <string name="menu_delete_produto">Excluir</string>
     <string name="msg_produto_save">Produto salvo !</string>
+    <string name="msg_produto_delete">Produto deletado !</string>
+    <string name="msg_produto_not_selected">Selecione um produto !</string>
+    <string name="msg_produto_cancel_operation">Ops..! Preencha os campos.</string>
 
     <!-- TITULOS -->
     <string name="title_activity_intro">OrçamentoFree</string>

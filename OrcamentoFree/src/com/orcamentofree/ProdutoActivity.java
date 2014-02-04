@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,11 +59,16 @@ public class ProdutoActivity extends Activity{
 	private Produto produto;
 	private String unidadeMedida;
 	private AlertDialog alertDeleteProduto;
-	private final int DELAY = 700;
 	private File fotoFile;
 	private boolean ADD_FOTO = false;	
+
+	private static final String SAVE = "SAVE";
+	private static final String DELETE = "DELETE";
+	private static final String FIELDS_NULL = "FIELDS_NULL";
+	private static final String PRODUTO_NULL = "PRODUTO_NULL";
+	private final int DELAY = 300;
 	
-	//private String[] umProdutos = {"UN.","QTD.", "KG.","MT"};
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -160,13 +167,7 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
 			this.txtProdutoPreco.setText(this.produto.getPreco().toString());
 			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
-			//TODO
-			//carregar foto
-			fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
-			if(fotoFile!=null){
-				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
-				this.imgProduto.setImageBitmap(bitmap);
-			}
+			carregaFotoProduto();
 			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
@@ -193,8 +194,8 @@ public class ProdutoActivity extends Activity{
 				SDCardUtils.remaneCardFile(this.fotoFile.getAbsolutePath(), this.fotoFile.getParent()+"/produto_"+this.produto.get_id()+".jpg");  
 	            this.produto.setFoto("produto_"+this.produto.get_id()+".jpg");
 	            this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
-			}			
-			Toast.makeText(this, "Produto Salvo com Sucesso", this.DELAY).show();
+			}	
+			showMessage(SAVE);
 			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
@@ -242,7 +243,7 @@ public class ProdutoActivity extends Activity{
 			this.dbHelp.deleteProdutoById(this.produto.get_id());
 			this.produto = new Produto();
 			limpaCampos();			
-			Toast.makeText(this, "Produto deletado com sucesso!",	this.DELAY).show();
+			showMessage(DELETE);
 			finish();
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
@@ -254,7 +255,7 @@ public class ProdutoActivity extends Activity{
 		if (this.produto.get_id() >= 1) {
 			exibeMensagemDelete();
 		} else {
-			Toast.makeText(this, "Você deve selecionar um Produto!", Toast.LENGTH_LONG).show();
+			showMessage(PRODUTO_NULL);			
 		}
 	}
 	
@@ -330,6 +331,16 @@ public class ProdutoActivity extends Activity{
 		}
 	}
 	
+	private void carregaFotoProduto(){
+		//TODO
+		//carregar foto
+		fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+		if(fotoFile!=null){
+			Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
+			this.imgProduto.setImageBitmap(bitmap);
+		}
+	}
+	
 	//Spinner
 	private void listenerUnidadeMedida() {
 		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -360,7 +371,7 @@ public class ProdutoActivity extends Activity{
 		if (this.txtProdutoDescricao.getText().toString().length()<=0 
 				|| this.txtProdutoPreco.getText().toString().length()<=0
 				|| this.txtProdutoQtd.getText().toString().length()<=0) {
-			Toast.makeText(this, "Operação cancelada, preencha os campos!",	Toast.LENGTH_LONG).show();
+			showMessage(FIELDS_NULL);
 			erro = false;
 		}
 		return erro;
@@ -374,11 +385,25 @@ public class ProdutoActivity extends Activity{
 		this.txtProdutoPreco.setText("");
 	}
 
-//	 @Override
-//	 public boolean onCreateOptionsMenu(Menu menu) {
-//	 getMenuInflater().inflate(R.menu.produto, menu);
-//	 return true;
-//	 }
+	
+	private void showMessage(String typeMsg) {
+		View view = null;
+		LayoutInflater inflater = getLayoutInflater();
+
+		if (typeMsg.compareTo(SAVE) == 0) {
+			view = inflater.inflate(R.layout.msg_produto_save, (ViewGroup) findViewById(R.id.produtoSaveLayout));
+		} else if (typeMsg.compareTo(DELETE) == 0) {
+			view = inflater.inflate(R.layout.msg_produto_delete,	(ViewGroup) findViewById(R.id.produtoDeleteLayout));
+		} else if (typeMsg.compareTo(FIELDS_NULL) == 0) {
+			view = inflater.inflate(R.layout.msg_produto_campos_null,(ViewGroup) findViewById(R.id.produtoFieldsNullLayout));
+		} else if (typeMsg.compareTo(PRODUTO_NULL) == 0) {
+			view = inflater.inflate(R.layout.msg_produto_not_selected, (ViewGroup) findViewById(R.id.produtoFieldsNullLayout));
+		}
+		Toast toast = new Toast(this);
+		toast.setView(view);
+		toast.setDuration(this.DELAY);
+		toast.show();
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -393,15 +418,13 @@ public class ProdutoActivity extends Activity{
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_SAVE_PRODUTO:
-			Log.w(LOG, "Aciondo botão de salvar produto.");
 			saveProduto();
 			return true;
 		case MENU_CANCEL_PRODUTO:
 			finish();
 			return true;
 		case MENU_DELETE_PRODUTO:
-			Log.w(LOG, "Aciondo botão de excluir produto.");
-			deleteProduto();
+			confirmaProdutoSelecionado();	
 			return true;
 		}
 		return false;
