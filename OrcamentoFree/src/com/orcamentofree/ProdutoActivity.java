@@ -95,6 +95,16 @@ public class ProdutoActivity extends Activity{
 
 		/** Ação do botão 'Adicionar Foto' **/ 
 		btnAddFotoProdutoAction();
+		
+		this.imgProduto.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				carregaFotoProduto();
+				Toast t = new Toast(getApplicationContext());
+				t.setView(imgProduto);
+				t.show();
+			}
+		});
+		
 
 	}
 
@@ -331,12 +341,12 @@ public class ProdutoActivity extends Activity{
 		}
 	}
 	
-	private void carregaFotoProduto(){
-		//TODO
-		//carregar foto
-		fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
-		if(fotoFile!=null){
-			Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(this.fotoFile),	150, 150);
+	private void carregaFotoProduto() {
+		// TODO
+		// carregar foto
+		fotoFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+		if (fotoFile != null) {
+			Bitmap bitmap = ImageUtils.getResizedImage( Uri.fromFile(this.fotoFile), 150, 150);
 			this.imgProduto.setImageBitmap(bitmap);
 		}
 	}

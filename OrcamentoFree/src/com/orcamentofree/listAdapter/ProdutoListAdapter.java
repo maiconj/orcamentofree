@@ -63,10 +63,10 @@ public class ProdutoListAdapter extends BaseAdapter {
 			produto_preco.setText("R$: "+String.valueOf(produto.getPreco()));
 			
 			if(produto.getFoto().compareTo("SEM_FOTO") == 0){
-				produto_foto.setImageResource(R.drawable.ic_action_accept_red);
+				produto_foto.setImageResource(R.drawable.ic_action_no_camera);
 			}else{
 				File fotoFile=SDCardUtils.getSdCardFile("orcamentoFree", produto.getFoto());
-				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	100, 100);
+				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	45, 45);
 				produto_foto.setImageBitmap(bitmap);
 			}
 			

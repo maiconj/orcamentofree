@@ -8,8 +8,7 @@
         android:id="@+id/btn_orcamento_add"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_orcamento_add"
-        android:drawableRight="@drawable/ic_action_new" />
+        android:text="@string/btn_orcamento_add" />
 
     <View
         android:layout_height="1dp"
