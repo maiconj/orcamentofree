@@ -54,13 +54,17 @@ public class ProdutoListAdapter extends BaseAdapter {
 			TextView produto_codigo = (TextView) view.findViewById(R.id.produto_codigo);
 			TextView produto_quantidade = (TextView) view.findViewById(R.id.produto_quantidade);
 			TextView produto_preco = (TextView) view.findViewById(R.id.produto_preco);
+			TextView produto_total = (TextView) view.findViewById(R.id.produto_total);
 			ImageView produto_foto = (ImageView) view.findViewById(R.id.img_produto_line); 
 			
 			
-			produto_descricao.setText("Desc.: "+produto.getDescricao());
-			produto_codigo.setText("Cód.: "+produto.getCodigo());
-			produto_quantidade.setText("Qtde.: "+String.valueOf(produto.getQuantidade()) +" - " + produto.getUnidadeMedida());
-			produto_preco.setText("R$: "+String.valueOf(produto.getPreco()));
+			produto_descricao.setText(produto.getDescricao());
+			produto_codigo.setText(produto.getCodigo());
+			produto_quantidade.setText("Qtde: " + String.valueOf(produto.getQuantidade()) +" " + produto.getUnidadeMedida());
+			produto_preco.setText("Preço: R$ " + String.valueOf(produto.getPreco()));
+			produto_total.setText("Total: R$ " + String.valueOf(produto.getPreco() * produto.getQuantidade()));
+			
+			
 			
 			if(produto.getFoto().compareTo("SEM_FOTO") == 0){
 				produto_foto.setImageResource(R.drawable.ic_action_no_camera);

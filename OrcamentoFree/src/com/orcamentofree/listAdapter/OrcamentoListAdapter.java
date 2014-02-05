@@ -1,8 +1,10 @@
 package com.orcamentofree.listAdapter;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.orcamentofree.pojo.Orcamento;
 
 public class OrcamentoListAdapter extends BaseAdapter {
@@ -55,8 +58,10 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			orcamento_loja.setText("Loja: " + orcmnt.getLoja());
 			orcamento_endereco.setText("Endereço: " + orcmnt.getEndereco());			
 			
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
-			orcamento_data.setText(formatter.format(formatter.parse(orcmnt.getData()).getTime()));
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");  
+			Date date = (Date)dateFormat.parse(orcmnt.getData());
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy - EEE");
+			orcamento_data.setText(formatter.format(date));
 			
 			return view;
 		}catch(Exception e){

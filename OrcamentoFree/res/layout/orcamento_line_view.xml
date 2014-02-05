@@ -4,14 +4,32 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/orcamento_descricao"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" >
-<!--         android:text="DESCRICAO"> -->
-    </TextView>
+        android:orientation="horizontal" 
+        android:layout_marginTop="3dp">
+
+        <TextView
+            android:id="@+id/orcamento_descricao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="16sp"
+            android:textStyle="bold" >
+<!--             android:text="DESCRICAO" > -->
+        </TextView>
+
+        <TextView
+            android:id="@+id/orcamento_data"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginRight="3dp"
+            android:layout_height="wrap_content">
+<!--             android:text="15/02/14 - Dom" > -->
+        </TextView>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/orcamento_loja"
@@ -23,15 +41,9 @@
     <TextView
         android:id="@+id/orcamento_endereco"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
 <!--         android:text="ENDERECO" > -->
-    </TextView>
-
-    <TextView
-        android:id="@+id/orcamento_data"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-<!--         android:text="16:50" > -->
     </TextView>
 
     <View

@@ -2,7 +2,7 @@ package com.orcamentofree.pojo;
 
 
 public enum UnidadeMedida {
-	 UN(0, "UN", "Unidade"),MT(1, "MT", "Metros"), QTD(2, "QTD", "Quantidade"), KG(3, "KG", "Quilo");
+	 UN(0, "UN", "Unidade"),MT(1, "MT", "Metro"), LT(2, "LT", "Litro"), KG(3, "KG", "Quilo");
 
 	private final int id;
 	private final String sigla;
@@ -41,7 +41,7 @@ public enum UnidadeMedida {
 			retorno = MT.descricao;
 			break;
 		case 2:
-			retorno = QTD.descricao;
+			retorno = LT.descricao;
 			break;
 		case 3:
 			retorno = KG.descricao;
@@ -59,7 +59,7 @@ public enum UnidadeMedida {
 			retorno = MT.sigla;
 			break;
 		case 2:
-			retorno = QTD.sigla;
+			retorno = LT.sigla;
 			break;
 		case 3:
 			retorno = KG.sigla;
@@ -76,14 +76,14 @@ public enum UnidadeMedida {
 			retorno = KG.id;
 		}else if (desc.compareTo(UN.sigla)==0){
 			retorno = UN.id;
-		}else if (desc.compareTo(QTD.sigla)==0){
-			retorno = QTD.id;
+		}else if (desc.compareTo(LT.sigla)==0){
+			retorno = LT.id;
 		}
 		return retorno;
 	}
 
 	public static String[] getValues() {
-		String[] umProdutos = {UN.sigla,MT.sigla,QTD.sigla,KG.sigla};
+		String[] umProdutos = {UN.sigla,MT.sigla,LT.sigla,KG.sigla};
 		return umProdutos;
 	}
 

@@ -241,7 +241,7 @@ public class ProdutoActivity extends Activity{
 //			Log.e(LOG," - codigo: "+ prod.getCodigo());
 //			Log.e(LOG," - descricao: "+ prod.getDescricao());
 //			Log.e(LOG," - preco: "+ prod.getPreco());
-//			Log.e(LOG," - qtd: "+ prod.getQuantidade());
+//			Log.e(LOG," - lt: "+ prod.getQuantidade());
 //			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
 //			Log.e(LOG,"----------------------");
 //		}
