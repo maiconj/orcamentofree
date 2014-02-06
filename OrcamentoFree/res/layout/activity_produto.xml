@@ -19,22 +19,8 @@
                 android:maxLength="25" >
             </EditText>
         </TableRow>
-
-        <TableRow>
-
-            <EditText
-                android:id="@+id/txt_produto_codigo"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/txt_produto_codigo"
-                android:inputType="text"
-                android:maxLength="25" >
-            </EditText>
-        </TableRow>
-
-        <TableRow>
+        
+          <TableRow>
 
             <EditText
                 android:id="@+id/txt_produto_qtd"
@@ -45,13 +31,6 @@
                 android:inputType="numberDecimal"
                 android:maxLength="6" />
 
-            <Spinner
-                android:id="@+id/spn_um_produto"
-                android:layout_width="0dp"
-                android:layout_height="49dp"
-                android:layout_weight="1"
-                android:prompt="@string/txt_produto_um" />
-
             <EditText
                 android:id="@+id/txt_produto_preco"
                 android:layout_width="0dp"
@@ -60,6 +39,40 @@
                 android:hint="@string/txt_produto_preco"
                 android:inputType="numberDecimal"
                 android:maxLength="10" />
+
+            <EditText
+                android:id="@+id/txt_produto_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/txt_produto_total"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="5dp"
+                android:enabled="false"
+                android:textStyle="bold" />
+        </TableRow>
+        
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/txt_produto_codigo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/txt_produto_codigo"
+                android:inputType="text"
+                android:maxLength="25" >
+            </EditText>
+
+            <Spinner
+                android:id="@+id/spn_um_produto"
+                android:layout_width="0dp"
+                android:layout_height="49dp"
+                android:layout_weight="1"
+                android:prompt="@string/txt_produto_um" />
         </TableRow>
 
         <TableRow>

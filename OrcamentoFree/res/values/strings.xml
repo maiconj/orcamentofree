@@ -4,11 +4,11 @@
     <string name="app_name">OrçamentoFree</string>
     <string name="action_settings">Settings</string>
 
-	<!-- MAIN -->
+    <!-- MAIN -->
     <string name="btn_orcamento_add">Novo Orçamento</string>
     <string name="menu_add_orcamento">Novo Orçamento</string>
     <string name="menu_sair_orcamento">Sair</string>
-    
+
     <!-- ORCAMENTO -->
     <string name="btn_orcamento_save">Salvar</string>
     <string name="btn_orcamento_delete">Excluir</string>
@@ -32,6 +32,7 @@
     <string name="txt_produto_preco">Preço</string>
     <string name="txt_produto_qtd">Qtde</string>
     <string name="txt_produto_um">Unidade de Medida</string>
+    <string name="txt_produto_total">Total R$</string>
     <string name="btn_produto_foto">+ Foto</string>
     <string name="btn_produto_save">Salvar</string>
     <string name="btn_produto_delete">Excluir</string>
@@ -50,5 +51,8 @@
     <string name="title_activity_orcamento_help">OrçamentoFree - Help</string>
     <string name="title_activity_orcamento">OrçamentoFree - Orçamento</string>
     <string name="title_activity_produto">OrçamentoFree - Produto</string>
+
+    <!-- Help -->
+    <string name="msg_help_btn_save">Botao "Salvar" tem a função de salvar orcamento quando na tela de Cadastro/Edicao de Orcamento ou salvar produto quando na tela de Cadastro/Edição de Produto.</string>
 
 </resources>

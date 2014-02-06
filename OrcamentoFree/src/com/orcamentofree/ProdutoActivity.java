@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,6 +45,8 @@ public class ProdutoActivity extends Activity{
 	private EditText txtProdutoDescricao;
 	private EditText txtProdutoPreco;
 	private EditText txtProdutoQtd;	
+	private EditText txtProdutoTotal;	
+	
 	
 	private Spinner umProduto;
 	
@@ -83,6 +86,9 @@ public class ProdutoActivity extends Activity{
 		
 		/** Ação do Spinner Unidade de Medida*/
 		listenerUnidadeMedida();
+	
+		/** Ação do Spinner Unidade de Medida*/
+		listenerTotalProdutoPreco();
 		
 		/** Ação do botão 'Salvar Orcamento' **/
 		btnSaveProdutoAction();
@@ -96,6 +102,8 @@ public class ProdutoActivity extends Activity{
 		/** Ação do botão 'Adicionar Foto' **/ 
 		btnAddFotoProdutoAction();
 		
+		//TODO
+		//AMPLIAR IMAGEN
 		this.imgProduto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				carregaFotoProduto();
@@ -107,12 +115,11 @@ public class ProdutoActivity extends Activity{
 		
 
 	}
-
+	
 	private void btnCancelProdutoAction() {
 		btnCancelProduto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Log.w("btnCancelOrcamento",
-						"Aciondo botão de cancelar produto.");
+				Log.w("btnCancelOrcamento", "Aciondo botão de cancelar produto.");
 				cancelProduto();
 			}
 
@@ -157,6 +164,7 @@ public class ProdutoActivity extends Activity{
 		this.txtProdutoDescricao =  (EditText) findViewById(R.id.txt_produto_descricao);
 		this.txtProdutoPreco =  (EditText) findViewById(R.id.txt_produto_preco);
 		this.txtProdutoQtd =  (EditText) findViewById(R.id.txt_produto_qtd);
+		this.txtProdutoTotal =  (EditText) findViewById(R.id.txt_produto_total);
 		
 		carregaSpinnerUnidadeMedida();
 		
@@ -177,6 +185,7 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
 			this.txtProdutoPreco.setText(this.produto.getPreco().toString());
 			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
+			this.txtProdutoTotal.setText(String.valueOf(this.produto.getQuantidade()*this.produto.getPreco()));
 			carregaFotoProduto();
 			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
@@ -363,6 +372,36 @@ public class ProdutoActivity extends Activity{
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
+	}
+	
+	private void listenerTotalProdutoPreco(){
+		//TODO
+		//calcular total 
+		this.txtProdutoQtd.setOnFocusChangeListener(new OnFocusChangeListener() {          
+		    public void onFocusChange(View v, boolean hasFocus) {
+		        if(!hasFocus) {
+		           calculaTotal();
+		        }
+		    }
+		});
+
+		this.txtProdutoPreco.setOnFocusChangeListener(new OnFocusChangeListener() {          
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus) {
+					calculaTotal();
+				}
+			}
+		});
+	}
+	
+	public void calculaTotal() {
+		if (!this.txtProdutoPreco.getText().toString().isEmpty() && !this.txtProdutoQtd.getText().toString().isEmpty()) {
+			this.txtProdutoTotal.setText("R$:" + String.valueOf(
+										Float.valueOf(this.txtProdutoQtd.getText().toString()) *
+										Float.valueOf(this.txtProdutoPreco.getText().toString())));
+		}else{
+			this.txtProdutoTotal.setText("R$: Total");
+		}
 	}
 	
 	private void addUnidadeMedidaProduto(String um){
