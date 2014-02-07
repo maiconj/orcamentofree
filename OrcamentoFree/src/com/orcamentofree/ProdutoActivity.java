@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -102,18 +103,12 @@ public class ProdutoActivity extends Activity{
 		/** Ação do botão 'Adicionar Foto' **/ 
 		btnAddFotoProdutoAction();
 		
-		//TODO
-		//AMPLIAR IMAGEN
-		this.imgProduto.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				carregaFotoProduto();
-				Toast t = new Toast(getApplicationContext());
-				t.setView(imgProduto);
-				t.show();
-			}
-		});
+		/**
+		 * Ação de clicar na imagem do produto , a a activity
+		 * ProdutoFotoActivity que mostra o imagen do produto ampliada
+		 */
+		listenerProdutoFoto();
 		
-
 	}
 	
 	private void btnCancelProdutoAction() {
@@ -351,16 +346,14 @@ public class ProdutoActivity extends Activity{
 	}
 	
 	private void carregaFotoProduto() {
-		// TODO
-		// carregar foto
 		fotoFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+		Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
 		if (fotoFile != null) {
-			Bitmap bitmap = ImageUtils.getResizedImage( Uri.fromFile(this.fotoFile), 150, 150);
+			Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	myBitmap.getWidth()/2, myBitmap.getHeight()/2);
 			this.imgProduto.setImageBitmap(bitmap);
 		}
 	}
 	
-	//Spinner
 	private void listenerUnidadeMedida() {
 		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -403,6 +396,22 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoTotal.setText("R$: Total");
 		}
 	}
+	
+	
+	private void listenerProdutoFoto(){
+		this.imgProduto.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+					initProdutoFoto();
+			}
+		});
+	}
+	
+	private void initProdutoFoto(){
+		Intent intentFoto = new Intent(this, ProdutoFotoActivity.class);
+		intentFoto.putExtra("ID_PRODUTO", String.valueOf(this.produto.get_id()));
+		startActivity(intentFoto);		
+	}
+	
 	
 	private void addUnidadeMedidaProduto(String um){
 		this.unidadeMedida = um;
@@ -450,7 +459,7 @@ public class ProdutoActivity extends Activity{
 		}
 		Toast toast = new Toast(this);
 		toast.setView(view);
-		toast.setDuration(this.DELAY);
+//		toast.setDuration(this.DELAY);
 		toast.show();
 	}
 	
@@ -484,7 +493,8 @@ public class ProdutoActivity extends Activity{
 		try {
 			super.onActivityResult(requestCode, resultCode, data);
 			if (resultCode == RESULT_OK) {
-				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	150, 150);
+				Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
+				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	myBitmap.getWidth()/2, myBitmap.getHeight()/2);
 				this.imgProduto.setImageBitmap(bitmap);
 				this.ADD_FOTO = true;
 			}

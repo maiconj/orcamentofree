@@ -51,6 +51,10 @@
             android:name="com.orcamentofree.OrcamentoHelpActivity"
             android:label="@string/title_activity_orcamento_help" >
         </activity>
+        <activity
+            android:name="com.orcamentofree.ProdutoFotoActivity"
+            android:label="@string/title_activity_produto_foto" >
+        </activity>
     </application>
 
 </manifest>

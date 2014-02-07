@@ -126,4 +126,29 @@ public class ImageUtils {
 
 		return newBitmap;
 	}
+	
+	public static Bitmap resizeImage(Bitmap bmpOriginal) {
+	    Bitmap novoBmp = null;
+	        
+	    int w = bmpOriginal.getWidth();
+	        int h = bmpOriginal.getHeight();
+	                    
+	        int novoW = 200;
+	        int novoH = 200;
+	       
+	        //Calcula escala em porcentagem do tamanho original para o novo tamanho
+	        float scalaW = ((float) novoW) / w;
+	        float scalaH = ((float) novoH) / h;
+	       
+	        // Criando uma matrix para manipulação da imagem BitMap
+	        Matrix matrix = new Matrix();
+	        
+	        // Definindo a proporção da escala para o matrix
+	        matrix.postScale(scalaW, scalaH);
+	        
+	        //criando o novo BitMap com o novo tamanho
+	        novoBmp = Bitmap.createBitmap(bmpOriginal, 0, 0, w, h, matrix, true);
+	        
+	    return novoBmp;
+	}
 }

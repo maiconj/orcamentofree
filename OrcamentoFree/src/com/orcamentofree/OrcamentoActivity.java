@@ -192,7 +192,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		}
 		Toast toast = new Toast(this);
 		toast.setView(view);
-		toast.setDuration(this.DELAY);
+//		toast.setDuration(this.DELAY);
 		toast.show();
 	}
 	
