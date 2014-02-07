@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 public class OrcamentoHelpActivity extends Activity {
 
 	private static final int MENU_SAIR = 0;
-	private ImageButton exitOrcamentoHelpBtn;
+	private Button exitOrcamentoHelpBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class OrcamentoHelpActivity extends Activity {
 	}
 
 	private void carregaComponentes() {
- 		this.exitOrcamentoHelpBtn = (ImageButton) findViewById(R.id.btn_orcamento_help_exit);
+ 		this.exitOrcamentoHelpBtn = (Button) findViewById(R.id.btn_orcamento_help_exit);
  	}
 	
 	private void btnExitOrcamentoHelpAction() {
@@ -39,7 +39,7 @@ public class OrcamentoHelpActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		MenuItem item = menu.add(0, MENU_SAIR, 0, "Voltar").setIcon(R.drawable.ic_action_back);
+		MenuItem item = menu.add(0, MENU_SAIR, 0, "Voltar").setIcon(R.drawable.ic_action_undo);
 		return true;
 	}
 
