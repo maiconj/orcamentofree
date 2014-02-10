@@ -1,6 +1,7 @@
 package com.orcamentofree;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -346,14 +347,20 @@ public class ProdutoActivity extends Activity{
 	}
 	
 	private void carregaFotoProduto() {
-		fotoFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
-		Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
-		if (fotoFile != null) {
-			Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	myBitmap.getWidth()/2, myBitmap.getHeight()/2);
-			this.imgProduto.setImageBitmap(bitmap);
+		try {
+			if (this.produto.getFoto().compareTo("SEM_FOTO") != 0) {
+				fotoFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+				Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
+				if (fotoFile != null) {
+					Bitmap bitmap = ImageUtils.getResizedImage( Uri.fromFile(fotoFile), myBitmap.getWidth() / 2, myBitmap.getHeight() / 2);
+					this.imgProduto.setImageBitmap(bitmap);
+				}
+			}
+		} catch (Exception e) {
+			Log.e(LOG, e.getMessage());
 		}
 	}
-	
+
 	private void listenerUnidadeMedida() {
 		umProduto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override

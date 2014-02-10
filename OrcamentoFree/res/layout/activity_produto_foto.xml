@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/produto_foto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@layout/border_foto"
+        android:contentDescription="@string/btn_produto_foto" >
+    </ImageView>
+    <!-- android:rotation="90" -->
+    <!-- android:src="@drawable/produto_1"/> -->
+
+</LinearLayout>
