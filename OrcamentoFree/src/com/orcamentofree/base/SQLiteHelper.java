@@ -19,8 +19,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					+ " data_hora date_time not null, " + " endereco text); ",
 			"CREATE TABLE produto ( _id integer primary key  autoincrement, "
 					+ " codigo text null, " + " descricao text not null, "
-					+ " quantidade FLOAT not null, "
-					+ " preco FLOAT not null, " + " foto text null, "
+					+ " quantidade decimal(10,2)  not null, "
+					+ " preco decimal(10,2) not null, " + " foto text null, "
 					+ " id_orcamento integer not null, "
 					+ " unidade_medida text not null,"
 					+ " FOREIGN KEY(id_orcamento) REFERENCES orcamento(_id)); " };

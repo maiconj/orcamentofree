@@ -1,7 +1,6 @@
 package com.orcamentofree;
 
 import java.io.File;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,6 +33,7 @@ import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.pojo.UnidadeMedida;
 import com.orcamentofree.utils.ImageUtils;
 import com.orcamentofree.utils.MascaraMonetaria;
+import com.orcamentofree.utils.MascaraQtde;
 import com.orcamentofree.utils.SDCardUtils;
 
 public class ProdutoActivity extends Activity{
@@ -71,44 +71,48 @@ public class ProdutoActivity extends Activity{
 	private static final String DELETE = "DELETE";
 	private static final String FIELDS_NULL = "FIELDS_NULL";
 	private static final String PRODUTO_NULL = "PRODUTO_NULL";
-	private final int DELAY = 300;
 	
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_produto);
-
-		/** Inicializa componetes da tela **/
-		carregaComponentes();
-
-		/** Carrega PRODUTO selecionado**/
-		carregaProduto();
-		
-		/** Ação do Spinner Unidade de Medida*/
-		listenerUnidadeMedida();
+		try{
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_produto);
 	
-		/** Ação do Spinner Unidade de Medida*/
-		listenerTotalProdutoPreco();
+			/** Inicializa componetes da tela **/
+			carregaComponentes();
+	
+			/** Carrega PRODUTO selecionado**/
+			carregaProduto();
+			
+			/** Ação do Spinner Unidade de Medida*/
+			listenerUnidadeMedida();
 		
-		/** Ação do botão 'Salvar Orcamento' **/
-		btnSaveProdutoAction();
-
-		/** Ação do botão 'Excluir Orcamento' **/
-		btnDeleteProdutoAction();
-
-		/** Ação do botão 'Cancelar Orcamento' **/
-		btnCancelProdutoAction();
-
-		/** Ação do botão 'Adicionar Foto' **/ 
-		btnAddFotoProdutoAction();
+			/** Ação do Spinner Unidade de Medida*/
+			listenerTotalProdutoPreco();
+			
+			/** Ação do botão 'Salvar Orcamento' **/
+			btnSaveProdutoAction();
+	
+			/** Ação do botão 'Excluir Orcamento' **/
+			btnDeleteProdutoAction();
+	
+			/** Ação do botão 'Cancelar Orcamento' **/
+			btnCancelProdutoAction();
+	
+			/** Ação do botão 'Adicionar Foto' **/ 
+			btnAddFotoProdutoAction();
+			
+			/**
+			 * Ação de clicar na imagem do produto , a a activity
+			 * ProdutoFotoActivity que mostra o imagen do produto ampliada
+			 */
+			listenerProdutoFoto();
+		}catch(Exception e ){
+			Log.e(LOG,e.getMessage());
+		}
 		
-		/**
-		 * Ação de clicar na imagem do produto , a a activity
-		 * ProdutoFotoActivity que mostra o imagen do produto ampliada
-		 */
-		listenerProdutoFoto();
 		
 	}
 	
@@ -168,7 +172,8 @@ public class ProdutoActivity extends Activity{
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
 		//add mascara
 		//TODO
-		//txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
+		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
+		txtProdutoQtd.addTextChangedListener(new MascaraQtde(txtProdutoQtd));
 		
 	}
 	
@@ -179,11 +184,11 @@ public class ProdutoActivity extends Activity{
 			this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(this.produto.get_idOrcamento()));
 			this.txtProdutoCodigo.setText(this.produto.getCodigo());
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
-			this.txtProdutoPreco.setText(this.produto.getPreco().toString());
-			this.txtProdutoQtd.setText(this.produto.getQuantidade().toString());
+			this.txtProdutoPreco.setText(Float.valueOf((this.produto.getPreco() * 100)).toString());
+			this.txtProdutoQtd.setText(Float.valueOf(this.produto.getQuantidade() * 10).toString());
 			this.txtProdutoTotal.setText(String.valueOf(this.produto.getQuantidade()*this.produto.getPreco()));
-			carregaFotoProduto();
 			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
+			carregaFotoProduto();
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
 				this.orcamento = dbHelp.findOrcamentoById(Integer.valueOf(it.getStringExtra("ID_ORCAMENTO_EDIT")));
 				this.produto = new Produto();
@@ -307,12 +312,9 @@ public class ProdutoActivity extends Activity{
 		try {
 			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
-			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
-			this.produto.setPreco(Float.valueOf(this.txtProdutoPreco.getText().toString()));
+			this.produto.setQuantidade(Float.valueOf(new MascaraQtde().replaceField(this.txtProdutoQtd.getText().toString())));
+			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.setUnidadeMedida(unidadeMedida);
-			//TODO
-//			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
-			
 			
 			//TODO adiciona foto
 			if(this.ADD_FOTO){
@@ -336,7 +338,7 @@ public class ProdutoActivity extends Activity{
 			this.produto = new Produto();
 			this.produto.setCodigo(this.txtProdutoCodigo.getText().toString());
 			this.produto.setDescricao(this.txtProdutoDescricao.getText().toString());
-			this.produto.setQuantidade(Float.valueOf(this.txtProdutoQtd.getText().toString()));
+			this.produto.setQuantidade(Float.valueOf(new MascaraQtde().replaceField(this.txtProdutoQtd.getText().toString())));
 			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.set_idOrcamento(this.orcamento.get_id());		
 			this.produto.setFoto("SEM_FOTO");
@@ -394,13 +396,18 @@ public class ProdutoActivity extends Activity{
 		});
 	}
 	
-	public void calculaTotal() {
-		if (!this.txtProdutoPreco.getText().toString().isEmpty() && !this.txtProdutoQtd.getText().toString().isEmpty()) {
-			this.txtProdutoTotal.setText("R$:" + String.valueOf(
-										Float.valueOf(this.txtProdutoQtd.getText().toString()) *
-										Float.valueOf(this.txtProdutoPreco.getText().toString())));
-		}else{
-			this.txtProdutoTotal.setText("R$: Total");
+	private void calculaTotal() {
+		try{
+			if (!this.txtProdutoPreco.getText().toString().isEmpty() && !this.txtProdutoQtd.getText().toString().isEmpty()) {
+				this.txtProdutoTotal.setText("R$:" + String.valueOf(
+											Float.valueOf(new MascaraQtde().replaceField(this.txtProdutoQtd.getText().toString())) *
+											Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString()))));
+			}else{
+				this.txtProdutoTotal.setText("R$: Total");
+			}
+		
+		}catch(Exception e ){
+			Log.e(LOG,e.getMessage());
 		}
 	}
 	
@@ -471,6 +478,7 @@ public class ProdutoActivity extends Activity{
 	}
 	
 	@Override
+	@SuppressWarnings("unused")
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuItem item = menu.add(0, MENU_SAVE_PRODUTO, 0, "Salvar").setIcon(R.drawable.ic_action_save);

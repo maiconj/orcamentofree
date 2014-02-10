@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -57,8 +56,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	private static final String DELETE = "DELETE";
 	private static final String FIELDS_NULL = "FIELDS_NULL";
 	private static final String ORCAMENTO_NULL = "ORC_NULL";
-	private final int DELAY = 300;
-	
+		
 	
 
 	@Override

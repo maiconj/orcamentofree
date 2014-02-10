@@ -7,23 +7,23 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-public class MascaraMonetaria implements TextWatcher {
+public class MascaraQtde implements TextWatcher {
 
 	private final EditText campo;
 	private final String LOG = "DESENV";
 	
-	public MascaraMonetaria() {
+	public MascaraQtde() {
 		this.campo = null;
 	}
 
-	public MascaraMonetaria(EditText campo) {
+	public MascaraQtde(EditText campo) {
 		super();
 		this.campo = campo;
 	}
 
 	private boolean isUpdating = false;
 	// Pega a formatacao do sistema, se for brasil R$ se EUA US$
-	private NumberFormat nf = NumberFormat.getCurrencyInstance();
+	private NumberFormat nf = NumberFormat.getNumberInstance();
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int after) {
@@ -37,11 +37,11 @@ public class MascaraMonetaria implements TextWatcher {
 		isUpdating = true;
 		String str = s.toString();
 		// Verifica se já existe a máscara no texto.
-		boolean hasMask = ((str.indexOf("R$") > -1 || str.indexOf("$") > -1) && (str.indexOf(".") > -1 || str.indexOf(",") > -1));
+		boolean hasMask = (str.indexOf(".") > -1 || str.indexOf(",") > -1);
 		// Verificamos se existe máscara
 		if (hasMask) {
 			// Retiramos a máscara.
-			str = str.replaceAll("[R$]", "").replaceAll("[,]", "").replaceAll("[.]", "");
+			str = str.replaceAll("[,]", "").replaceAll("[.]", "");
 		}
 
 	
@@ -70,14 +70,7 @@ public class MascaraMonetaria implements TextWatcher {
 	}
 
 	public String replaceField(String valor) {
-		String valorReplace = null;
-		valorReplace = valor.replaceAll("[R$]", "").replace(",", ".");
-		if (valor.length() >= 10) {
-			valor = valorReplace.substring(0, 1) + valorReplace.substring(2, valorReplace.length());
-		}else{
-			valor = valorReplace;
-		}
-		return valor;
+		return  valor.replace(",", ".");		
 	}
 
 }
