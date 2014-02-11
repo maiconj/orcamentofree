@@ -54,13 +54,23 @@ public class ProdutoFotoActivity extends Activity {
 	}
 
 	private void carregaFotoProduto() {
-		File imgFile =SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
-		if (imgFile.exists()) {
-			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());			
-			this.imgFotoProduto.setImageBitmap(ImageUtils.getResizedImage( Uri.fromFile(imgFile), myBitmap.getWidth(), myBitmap.getHeight()));
+		if (this.produto.getFoto().compareTo("SEM_FOTO") != 0) {
+			File imgFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
+			if (imgFile.exists()) {
+				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+				this.imgFotoProduto.setImageBitmap(ImageUtils.getResizedImage(Uri.fromFile(imgFile), myBitmap.getWidth(),myBitmap.getHeight()));
+			} else {
+				showMessage();
+				finish();
+			}
 		} else {
-			showMessage();
-			finish();
+			Intent it = getIntent();
+			if(it.getStringExtra("FOTO_FILE") != null){
+				String absPath = it.getStringExtra("FOTO_FILE").toString();
+				File m = new File(absPath);
+				Bitmap myBitmap = BitmapFactory.decodeFile(absPath);
+				this.imgFotoProduto.setImageBitmap(ImageUtils.getResizedImage(Uri.fromFile(m), myBitmap.getWidth(),myBitmap.getHeight()));
+			}
 		}
 	}
 	

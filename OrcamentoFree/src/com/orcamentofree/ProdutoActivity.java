@@ -423,6 +423,7 @@ public class ProdutoActivity extends Activity{
 	private void initProdutoFoto(){
 		Intent intentFoto = new Intent(this, ProdutoFotoActivity.class);
 		intentFoto.putExtra("ID_PRODUTO", String.valueOf(this.produto.get_id()));
+		intentFoto.putExtra("FOTO_FILE", fotoFile.getAbsolutePath().toString());
 		startActivity(intentFoto);		
 	}
 	
