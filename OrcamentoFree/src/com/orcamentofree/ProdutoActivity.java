@@ -32,6 +32,7 @@ import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.pojo.UnidadeMedida;
 import com.orcamentofree.utils.ImageUtils;
+import com.orcamentofree.utils.InternalStorage;
 import com.orcamentofree.utils.MascaraMonetaria;
 import com.orcamentofree.utils.MascaraQtde;
 import com.orcamentofree.utils.SDCardUtils;
@@ -174,7 +175,7 @@ public class ProdutoActivity extends Activity{
 		//TODO
 		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
 		txtProdutoQtd.addTextChangedListener(new MascaraQtde(txtProdutoQtd));
-		
+		getFilesDir();
 	}
 	
 	private void carregaProduto() {
@@ -236,9 +237,15 @@ public class ProdutoActivity extends Activity{
 			}
 			this.intentCamera = new Intent("android.media.action.IMAGE_CAPTURE");
 			this.intentCamera.putExtra(MediaStore.EXTRA_OUTPUT,	Uri.fromFile(this.fotoFile));
-			startActivityForResult(this.intentCamera, 0);			
+			startActivityForResult(this.intentCamera, 0);	
+			
+			//TODO SALVAR DIRETORIO FOTO TEMPORARIA
+//			InternalStorage.salvarInternalStorage(fotoFile.getAbsolutePath().toString(), getFilesDir());
+//			Log.e(LOG, InternalStorage.acessaInternalStorage(getFilesDir()));
+//			Log.e(LOG, String.valueOf(InternalStorage.deleteInternalStorageFile(getFilesDir())));
+			
 		} catch (Exception e) {
-			Log.e("DESENV", e.getMessage());
+			Log.e(LOG, e.getMessage());
 		}
 	}
 
@@ -515,7 +522,7 @@ public class ProdutoActivity extends Activity{
 				this.ADD_FOTO = true;
 			}
 		} catch (Exception e) {
-			Log.e("DESENV", e.getMessage());
+			Log.e(LOG, e.getMessage());
 		}
 	}
 }
