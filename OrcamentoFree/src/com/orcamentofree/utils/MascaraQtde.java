@@ -50,7 +50,7 @@ public class MascaraQtde implements TextWatcher {
 		try {
 				
 			nf.setMinimumFractionDigits(2);
-			str = nf.format(Float.parseFloat(str) / 100);
+			str = nf.format(Float.parseFloat("00"+str) / 100);
 			campo.setText(str);
 			campo.setSelection(campo.getText().length());
 		} catch (Exception e) {

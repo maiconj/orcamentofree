@@ -1,6 +1,8 @@
 package com.orcamentofree.listAdapter;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import android.content.Context;
@@ -55,14 +57,13 @@ public class ProdutoListAdapter extends BaseAdapter {
 			TextView produto_quantidade = (TextView) view.findViewById(R.id.produto_quantidade);
 			TextView produto_preco = (TextView) view.findViewById(R.id.produto_preco);
 			TextView produto_total = (TextView) view.findViewById(R.id.produto_total);
-			ImageView produto_foto = (ImageView) view.findViewById(R.id.img_produto_line); 
-			
+			ImageView produto_foto = (ImageView) view.findViewById(R.id.img_produto_line); 	
 			
 			produto_descricao.setText(produto.getDescricao());
 			produto_codigo.setText(produto.getCodigo());
-			produto_quantidade.setText("Qtde: " + String.valueOf(produto.getQuantidade()) +" " + produto.getUnidadeMedida());
-			produto_preco.setText("Preço: R$ " + String.valueOf(produto.getPreco()));
-			produto_total.setText("Total: R$ " + String.valueOf(produto.getPreco() * produto.getQuantidade()));
+			produto_quantidade.setText("Qtde: " + String.valueOf(BigDecimal.valueOf(produto.getQuantidade()).setScale(2,RoundingMode.HALF_UP).toString() + " " + produto.getUnidadeMedida()));
+			produto_preco.setText("Preço: R$ " + String.valueOf(BigDecimal.valueOf(produto.getPreco()).setScale(2,RoundingMode.HALF_UP)));
+			produto_total.setText("Total: R$ " + String.valueOf(BigDecimal.valueOf(produto.getPreco() * produto.getQuantidade()).setScale(2,RoundingMode.HALF_UP)));
 			
 			
 			

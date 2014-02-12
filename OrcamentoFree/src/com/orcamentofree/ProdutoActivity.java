@@ -1,6 +1,8 @@
 package com.orcamentofree;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,7 +34,6 @@ import com.orcamentofree.pojo.Orcamento;
 import com.orcamentofree.pojo.Produto;
 import com.orcamentofree.pojo.UnidadeMedida;
 import com.orcamentofree.utils.ImageUtils;
-import com.orcamentofree.utils.InternalStorage;
 import com.orcamentofree.utils.MascaraMonetaria;
 import com.orcamentofree.utils.MascaraQtde;
 import com.orcamentofree.utils.SDCardUtils;
@@ -175,7 +176,6 @@ public class ProdutoActivity extends Activity{
 		//TODO
 		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
 		txtProdutoQtd.addTextChangedListener(new MascaraQtde(txtProdutoQtd));
-		getFilesDir();
 	}
 	
 	private void carregaProduto() {
@@ -187,7 +187,8 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
 			this.txtProdutoPreco.setText(Float.valueOf((this.produto.getPreco() * 100)).toString());
 			this.txtProdutoQtd.setText(Float.valueOf(this.produto.getQuantidade() * 10).toString());
-			this.txtProdutoTotal.setText(String.valueOf(this.produto.getQuantidade()*this.produto.getPreco()));
+//			this.txtProdutoTotal.setText(String.valueOf(this.produto.getQuantidade()*this.produto.getPreco()));
+			this.txtProdutoTotal.setText(calculaTotal());
 			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
 			carregaFotoProduto();
 		} else if (it.getStringExtra("ID_ORCAMENTO_EDIT") != null) {
@@ -209,7 +210,6 @@ public class ProdutoActivity extends Activity{
 				addProduto = true;
 			}
 			this.produto = dbHelp.findProdutoById(this.dbHelp.saveProduto(this.produto));
-			//TODO adiciona foto
 			if(this.ADD_FOTO && addProduto){
 				//trocar nome arquivo
 				SDCardUtils.remaneCardFile(this.fotoFile.getAbsolutePath(), this.fotoFile.getParent()+"/produto_"+this.produto.get_id()+".jpg");  
@@ -243,26 +243,11 @@ public class ProdutoActivity extends Activity{
 //			InternalStorage.salvarInternalStorage(fotoFile.getAbsolutePath().toString(), getFilesDir());
 //			Log.e(LOG, InternalStorage.acessaInternalStorage(getFilesDir()));
 //			Log.e(LOG, String.valueOf(InternalStorage.deleteInternalStorageFile(getFilesDir())));
-			
+//			
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}
 	}
-
-	//TODO
-//	private void imprimeProdutos(){
-//		ArrayList<Produto> produtoLst = (ArrayList<Produto>) this.dbHelp.findProduto();
-//		Log.e(LOG,"numero produtos salvos: " + produtoLst.size());
-//		for (Produto prod : produtoLst) {
-//			Log.e(LOG," - _id: "+ prod.get_id());
-//			Log.e(LOG," - codigo: "+ prod.getCodigo());
-//			Log.e(LOG," - descricao: "+ prod.getDescricao());
-//			Log.e(LOG," - preco: "+ prod.getPreco());
-//			Log.e(LOG," - lt: "+ prod.getQuantidade());
-//			Log.e(LOG," - id_orcamento: "+ prod.get_idOrcamento());
-//			Log.e(LOG,"----------------------");
-//		}
-//	}
 	
 	private void deleteProduto() {
 		try {
@@ -323,7 +308,6 @@ public class ProdutoActivity extends Activity{
 			this.produto.setPreco(Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString())));
 			this.produto.setUnidadeMedida(unidadeMedida);
 			
-			//TODO adiciona foto
 			if(this.ADD_FOTO){
 				//trocar nome arquivo
 				SDCardUtils.remaneCardFile(this.fotoFile.getAbsolutePath(), this.fotoFile.getParent()+"/produto_"+this.produto.get_id()+".jpg");  
@@ -389,7 +373,7 @@ public class ProdutoActivity extends Activity{
 		this.txtProdutoQtd.setOnFocusChangeListener(new OnFocusChangeListener() {          
 		    public void onFocusChange(View v, boolean hasFocus) {
 		        if(!hasFocus) {
-		           calculaTotal();
+		           calculaTotalListener();
 		        }
 		    }
 		});
@@ -397,25 +381,38 @@ public class ProdutoActivity extends Activity{
 		this.txtProdutoPreco.setOnFocusChangeListener(new OnFocusChangeListener() {          
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(!hasFocus) {
-					calculaTotal();
+					calculaTotalListener();
 				}
 			}
 		});
 	}
 	
-	private void calculaTotal() {
+	private void calculaTotalListener() {
 		try{
 			if (!this.txtProdutoPreco.getText().toString().isEmpty() && !this.txtProdutoQtd.getText().toString().isEmpty()) {
-				this.txtProdutoTotal.setText("R$:" + String.valueOf(
-											Float.valueOf(new MascaraQtde().replaceField(this.txtProdutoQtd.getText().toString())) *
-											Float.valueOf(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString()))));
+				BigDecimal qtde = new BigDecimal(new MascaraQtde().replaceField(this.txtProdutoQtd.getText().toString()));
+				BigDecimal preco = new BigDecimal(new MascaraMonetaria().replaceField(this.txtProdutoPreco.getText().toString()));
+				this.txtProdutoTotal.setText("R$: " + String.valueOf(qtde.multiply(preco).setScale(2,RoundingMode.HALF_UP)));
 			}else{
 				this.txtProdutoTotal.setText("R$: Total");
 			}
-		
 		}catch(Exception e ){
 			Log.e(LOG,e.getMessage());
 		}
+	}
+
+	private String calculaTotal() {
+		String total = null;
+		try{
+			if (!this.produto.getQuantidade().toString().isEmpty() && !this.produto.getPreco().toString().isEmpty()) {
+				BigDecimal qtde = new BigDecimal(this.produto.getQuantidade());
+				BigDecimal preco = new BigDecimal(this.produto.getPreco());
+				total = String.valueOf("R$: " + qtde.multiply(preco).setScale(2,RoundingMode.HALF_UP));
+			}
+		}catch(Exception e ){
+			Log.e(LOG,e.getMessage());
+		}
+		return total;
 	}
 	
 	

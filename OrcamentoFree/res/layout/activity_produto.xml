@@ -35,7 +35,7 @@
                 android:id="@+id/txt_produto_preco"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:hint="@string/txt_produto_preco"
                 android:inputType="numberDecimal"
                 android:maxLength="10" />
@@ -44,7 +44,7 @@
                 android:id="@+id/txt_produto_total"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:hint="@string/txt_produto_total"
                 android:textSize="16sp"
                 android:textColor="@color/white"
@@ -60,7 +60,7 @@
                 android:id="@+id/txt_produto_codigo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:ems="10"
                 android:hint="@string/txt_produto_codigo"
                 android:inputType="text"
@@ -71,7 +71,7 @@
                 android:id="@+id/spn_um_produto"
                 android:layout_width="0dp"
                 android:layout_height="49dp"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:prompt="@string/txt_produto_um" />
         </TableRow>
 
