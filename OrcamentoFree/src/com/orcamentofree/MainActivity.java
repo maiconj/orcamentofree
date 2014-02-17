@@ -28,9 +28,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private static final String LOG = "DESENV";
 	private static final int ADD_ORCAMENTO = 0;
 	private static final int EDIT_ORCAMENTO = 1;
-	private static final int DELET_ORCAMENTO = 2;
-	private static final int SAVE_ORCAMENTO = 3;
-
+	
 	private static final int MENU_ADD_ORCAMENTO = 1;
 	private static final int MENU_AJUDA = 3;
 	private static final int MENU_SAIR = 2;

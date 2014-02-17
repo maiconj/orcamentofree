@@ -293,27 +293,6 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		return erro;
 	}
 
-	//TODO
-	private void imprimeOrcamentos(){
-		ArrayList<Orcamento> orcamentoLst = (ArrayList<Orcamento>) this.dbHelp.findOrcamento();
-		Log.e(LOG,"numero orcamentos salvos: " + orcamentoLst.size());
-		for (Orcamento orc : orcamentoLst) {
-			Log.e(LOG," - _id: "+ orc.get_id());
-			Log.e(LOG," - descricao: "+ orc.getDescricao());
-			Log.e(LOG," - loja: "+ orc.getLoja());
-			Log.e(LOG," - data: "+ orc.getData());
-			Log.e(LOG," - endereco: "+ orc.getEndereco());
-			Log.e(LOG,"----------------------");
-		}
-	}
-	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.orcamento, menu);
-//		return true;
-//	}
-	
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);

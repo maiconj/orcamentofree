@@ -172,8 +172,6 @@ public class ProdutoActivity extends Activity{
 		
 		this.imgProduto = (ImageView) findViewById(R.id.img_produto); 
 		this.dbHelp = new OrcamentoFreeDao(getApplicationContext());
-		//add mascara
-		//TODO
 		txtProdutoPreco.addTextChangedListener(new MascaraMonetaria(txtProdutoPreco));
 		txtProdutoQtd.addTextChangedListener(new MascaraQtde(txtProdutoQtd));
 	}
@@ -187,7 +185,6 @@ public class ProdutoActivity extends Activity{
 			this.txtProdutoDescricao.setText(this.produto.getDescricao());
 			this.txtProdutoPreco.setText(Float.valueOf((this.produto.getPreco() * 100)).toString());
 			this.txtProdutoQtd.setText(Float.valueOf(this.produto.getQuantidade() * 10).toString());
-//			this.txtProdutoTotal.setText(String.valueOf(this.produto.getQuantidade()*this.produto.getPreco()));
 			this.txtProdutoTotal.setText(calculaTotal());
 			this.umProduto.setSelection(UnidadeMedida.getId(this.produto.getUnidadeMedida()));
 			carregaFotoProduto();
@@ -368,8 +365,6 @@ public class ProdutoActivity extends Activity{
 	}
 	
 	private void listenerTotalProdutoPreco(){
-		//TODO
-		//calcular total 
 		this.txtProdutoQtd.setOnFocusChangeListener(new OnFocusChangeListener() {          
 		    public void onFocusChange(View v, boolean hasFocus) {
 		        if(!hasFocus) {
