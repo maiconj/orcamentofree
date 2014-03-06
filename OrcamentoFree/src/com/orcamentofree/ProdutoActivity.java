@@ -491,7 +491,9 @@ public class ProdutoActivity extends Activity{
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_SAVE_PRODUTO:
-			saveProduto();
+			if (camposValidos()) {
+				saveProduto();
+			}
 			return true;
 		case MENU_CANCEL_PRODUTO:
 			finish();

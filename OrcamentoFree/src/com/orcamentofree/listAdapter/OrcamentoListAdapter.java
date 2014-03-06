@@ -1,7 +1,12 @@
 package com.orcamentofree.listAdapter;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,16 +19,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.orcamentofree.base.OrcamentoFreeDao;
 import com.orcamentofree.pojo.Orcamento;
+import com.orcamentofree.pojo.Produto;
 
 public class OrcamentoListAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Orcamento> orcamentolst;
+	private OrcamentoFreeDao dbHelp = null;
 
-	public OrcamentoListAdapter(Context contex, List<Orcamento> lista) {
+	public OrcamentoListAdapter(Context contex, List<Orcamento> lista, Context applicationContext) {
 		this.context = contex;
 		this.orcamentolst = lista;
+		this.dbHelp  = new OrcamentoFreeDao(applicationContext);
 	}
 
 	@Override
@@ -53,6 +62,7 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			TextView orcamento_loja = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_loja);
 			TextView orcamento_endereco = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_endereco);
 			TextView orcamento_data = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_data);
+			TextView orcamento_total = (TextView) view.findViewById(com.orcamentofree.R.id.orcamento_total);
 					
 			orcamento_descricao.setText(orcmnt.getDescricao());
 			orcamento_loja.setText("Loja: " + orcmnt.getLoja());
@@ -63,11 +73,25 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy - EEE");
 			orcamento_data.setText(formatter.format(date));
 			
+			orcamento_total.setText((calculaTotal(orcmnt)));			
+			
 			return view;
 		}catch(Exception e){
 			Log.e("DESENV", e.getMessage());			
 		}
 		return null;
 	}
-
+	
+	private String calculaTotal(Orcamento orc){
+		ArrayList<Produto> produtoLst  = new ArrayList<Produto>(); 
+		produtoLst.addAll(dbHelp.findProdutoByOrcamento(orc));
+		BigDecimal totalOrcamento = new BigDecimal(BigInteger.ZERO);
+		
+		if(produtoLst.size()>0){
+			for(Produto p : produtoLst){
+				totalOrcamento = totalOrcamento.add(p.getTotal());
+			}
+		}
+		return  totalOrcamento.setScale(2, RoundingMode.HALF_UP).toString();		
+	}
 }

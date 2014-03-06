@@ -1,6 +1,9 @@
 package com.orcamentofree;
 
 //import com.orcamentofree.base.OrcamentoDataBaseHelper;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -19,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orcamentofree.base.OrcamentoFreeDao;
@@ -38,6 +42,8 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	private EditText txtOrcamentoDescricao;
 	private EditText txtOrcamentoLoja;
 	private EditText txtOrcamentoEndereco;
+	private TextView txtOrcamentoTotal;
+	
 
 	private Orcamento orcamento;
 	private DateUtils dateUtils;
@@ -145,6 +151,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		this.txtOrcamentoDescricao = (EditText) findViewById(R.id.txt_orcamento_descricao);
 		this.txtOrcamentoLoja = (EditText) findViewById(R.id.txt_orcamento_loja);
 		this.txtOrcamentoEndereco = (EditText) findViewById(R.id.txt_orcamento_endereco);
+		this.txtOrcamentoTotal = (TextView) findViewById(R.id.txt_orcamento_total);
 		this.dateUtils = new DateUtils();
 		this.intentProduto = new Intent(this, ProdutoActivity.class);
 	}
@@ -156,11 +163,27 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			this.txtOrcamentoDescricao.setText(orcamento.getDescricao());
 			this.txtOrcamentoLoja.setText(orcamento.getLoja());
 			this.txtOrcamentoEndereco.setText(orcamento.getEndereco());
+			this.txtOrcamentoTotal.setText("Total R$: " + calculaTotalOrcamento(this.orcamento));
 		} else {
 			this.orcamento = new Orcamento();
+			this.txtOrcamentoTotal.setText("Total R$: " + calculaTotalOrcamento(this.orcamento));
 		}
 	}
 
+	private String calculaTotalOrcamento(Orcamento orc){
+		ArrayList<Produto> produtoLst  = new ArrayList<Produto>(); 
+		produtoLst.addAll(dbHelp.findProdutoByOrcamento(orc));
+		BigDecimal totalOrcamento = new BigDecimal(BigInteger.ZERO);
+		
+		if(produtoLst.size()>0){
+			for(Produto p : produtoLst){
+				totalOrcamento = totalOrcamento.add(p.getTotal());
+			}
+		}			
+		return totalOrcamento.setScale(2,RoundingMode.HALF_UP).toString();
+	}
+	
+	
 	private void saveOrcamento() {
 		try {
 			if (this.orcamento.get_id() >= 1) {
@@ -173,6 +196,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			Log.e(LOG, e.getMessage());
 		}
 		showMessage(SAVE);
+		finish();
 	}
 	
 	private void showMessage(String typeMsg) {
@@ -209,7 +233,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 	}
 
 	/**
-	 * Carrega os campos no orcamento para fazer update
+	 * Carrega os campos no orcamento antes de fazer update na base
 	 * **/
 	private void updateOrcamento() {
 		this.orcamento.setDescricao(this.txtOrcamentoDescricao.getText().toString());
@@ -276,6 +300,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 		this.txtOrcamentoDescricao.setText("");
 		this.txtOrcamentoLoja.setText("");
 		this.txtOrcamentoEndereco.setText("");
+		this.txtOrcamentoTotal.setText("Total R$: " + BigDecimal.ZERO.setScale(2,RoundingMode.HALF_UP).toString());
 	}
 
 	private void cancelOrcamento() {
@@ -335,6 +360,7 @@ public class OrcamentoActivity extends Activity  implements OnItemClickListener 
 			listView = (ListView) findViewById(R.id.produtoList);
 			listView.setAdapter(produtoAdapter);
 			listView.setOnItemClickListener(this);
+			this.txtOrcamentoTotal.setText("Total R$: " + calculaTotalOrcamento(this.orcamento));
 		} catch (Exception e) {
 			Log.e(LOG, e.getMessage());
 		}

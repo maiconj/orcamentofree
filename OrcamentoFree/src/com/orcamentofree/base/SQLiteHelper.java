@@ -8,7 +8,7 @@ import android.util.Log;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String NOMEBANCO = "orcamentofree";
-	private static int versao = 1;
+	private static int versao = 2;
 	private static final String LOG = "DESENV";
 	private String[] scriptSQLDelete = new String[] {
 			"DROP TABLE IF EXISTS orcamento;", "DROP TABLE IF EXISTS produto;" };
@@ -57,6 +57,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			db.execSQL(sql);
 		}
 		Log.i(LOG, "populando TABLE ORCAMENTO");
+//		int qtdeScriptsPopula = this.scriptSQLPopulaOrcamento.length;
+//
+//		for (int i = 0; i < qtdeScriptsPopula; i++) {
+//			String sq = this.scriptSQLPopulaOrcamento[i];
+//			Log.i(LOG, "sql_popula: " + sq);
+//			db.execSQL(sq);
+//		}
 	}
 
 	@Override

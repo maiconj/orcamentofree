@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Orçamento Free</string>
+    <string name="app_name">OrçamentoFree</string>
     <string name="action_settings">Settings</string>
 
     <!-- MAIN -->
@@ -55,7 +55,7 @@
     <string name="title_activity_produto_foto">OrçamentoFree - Produto - Foto</string>
 
     <!-- Help -->
-    <string name="msg_help_app_name">OrcamentoFree vem para ajudar quem esta fazendo pesquisa de preços, pois pode vincular foto ao produto pesquisado.</string>
+    <string name="msg_help_app_name">OrçamentoFree vem para ajudar quem faz pesquisa de preços e tem a necessidade de comparar  \nPREÇO X  QUALIDADE do produto pesquisado, pois tem a funcionalidade de vincular foto ao produto pesquisado.</string>
     <string name="msg_help_btn_add_orcamento">Botão com a função de CRIAR um novo orçamento.</string>
     <string name="msg_help_btn_save">Botão com a função de SALVAR Orcamento ou Produto, conforme tela o usuario esteja utilizando.</string>
     <string name="msg_help_btn_delete">Botão com a função de DELETAR Orcamento ou Produto, conforme tela o usuario esteja utilizando.</string>

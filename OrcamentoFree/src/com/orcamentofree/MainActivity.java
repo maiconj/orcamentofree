@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		ArrayList<Orcamento> orcamentoLst = new ArrayList<Orcamento>();
 		orcamentoLst.clear();
 		orcamentoLst.addAll(dbHelp.findOrcamento());
-		OrcamentoListAdapter orcamentoAdapter = new OrcamentoListAdapter(this,orcamentoLst);
+		OrcamentoListAdapter orcamentoAdapter = new OrcamentoListAdapter(this,orcamentoLst,getApplicationContext());
 		listView = (ListView) findViewById(R.id.orcamentoList);
 		listView.setAdapter(orcamentoAdapter);
 		listView.setOnItemClickListener(this);

@@ -63,7 +63,7 @@ public class ProdutoListAdapter extends BaseAdapter {
 			produto_codigo.setText(produto.getCodigo());
 			produto_quantidade.setText("Qtde: " + String.valueOf(BigDecimal.valueOf(produto.getQuantidade()).setScale(2,RoundingMode.HALF_UP).toString() + " " + produto.getUnidadeMedida()));
 			produto_preco.setText("Preço: R$ " + String.valueOf(BigDecimal.valueOf(produto.getPreco()).setScale(2,RoundingMode.HALF_UP)));
-			produto_total.setText("Total: R$ " + String.valueOf(BigDecimal.valueOf(produto.getPreco() * produto.getQuantidade()).setScale(2,RoundingMode.HALF_UP)));
+			produto_total.setText("Total: R$ " + produto.getTotal());
 			
 			
 			

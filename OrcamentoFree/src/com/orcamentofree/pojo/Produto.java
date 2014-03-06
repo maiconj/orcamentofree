@@ -1,5 +1,10 @@
 package com.orcamentofree.pojo;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import android.util.Log;
+
 public class Produto {
 
 	private int _id;
@@ -149,10 +154,13 @@ public class Produto {
 		this.unidadeMedida = unidadeMedida;
 	}
 
-	public String getTotal() {
-		String retorno = "0.00";
-		if (!Float.isNaN(this.getQuantidade()) && !Float.isNaN(this.getPreco())) {
-			retorno = String.valueOf(this.getQuantidade() * this.getPreco());
+	public BigDecimal getTotal() {
+		BigDecimal retorno = null;
+		try {
+			retorno = BigDecimal.valueOf(this.getPreco() * this.getQuantidade()).setScale(2, RoundingMode.HALF_UP);
+		} catch (Exception e) {
+			Log.e("DESENV", e.getMessage());
+			retorno = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 		}
 		return retorno;
 	}
