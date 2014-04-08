@@ -68,12 +68,12 @@ public class OrcamentoListAdapter extends BaseAdapter {
 			orcamento_loja.setText("Loja: " + orcmnt.getLoja());
 			orcamento_endereco.setText("Endereço: " + orcmnt.getEndereco());			
 			
-			DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");  
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");  
 			Date date = (Date)dateFormat.parse(orcmnt.getData());
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy - EEE");
 			orcamento_data.setText(formatter.format(date));
 			
-			orcamento_total.setText((calculaTotal(orcmnt)));			
+			orcamento_total.setText("R$: "+(calculaTotal(orcmnt)));			
 			
 			return view;
 		}catch(Exception e){

@@ -342,7 +342,9 @@ public class ProdutoActivity extends Activity{
 				fotoFile = SDCardUtils.getSdCardFile("orcamentoFree", this.produto.getFoto());
 				Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
 				if (fotoFile != null) {
-					Bitmap bitmap = ImageUtils.getResizedImage( Uri.fromFile(fotoFile), myBitmap.getWidth() / 2, myBitmap.getHeight() / 2);
+					Bitmap bitmap = ImageUtils.getResizedImage( Uri.fromFile(fotoFile), 200 , 200); 
+					//TODO
+					//myBitmap.getWidth() / 2, myBitmap.getHeight() / 2);
 					this.imgProduto.setImageBitmap(bitmap);
 				}
 			}
@@ -511,7 +513,9 @@ public class ProdutoActivity extends Activity{
 			super.onActivityResult(requestCode, resultCode, data);
 			if (resultCode == RESULT_OK) {
 				Bitmap myBitmap = BitmapFactory.decodeFile(fotoFile.getAbsolutePath());
-				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	myBitmap.getWidth()/2, myBitmap.getHeight()/2);
+				Bitmap bitmap = ImageUtils.getResizedImage(Uri.fromFile(fotoFile),	200,200);
+				//TODO
+				//myBitmap.getWidth()/2, myBitmap.getHeight()/2);
 				this.imgProduto.setImageBitmap(bitmap);
 				this.ADD_FOTO = true;
 			}

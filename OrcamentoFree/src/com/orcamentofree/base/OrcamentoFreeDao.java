@@ -119,8 +119,8 @@ public class OrcamentoFreeDao {
 	// Retorna um cursor com todos os orcamentos
 	public Cursor getOrcamentoCursor() {
 		try {
-			// select * from orcamentos
-			return db.query(NOME_TABELA_ORCAMENTO, Orcamento.colunas, null, null, null, null, null, null);
+			// select * from orcamentos order by _id desc
+			return db.query(NOME_TABELA_ORCAMENTO, Orcamento.colunas, null, null, null, null, "_id desc", null);
 		} catch (SQLException e) {
 			Log.e(LOG, "Erro ao buscar os orcamentos: " + e.toString());
 			return null;
