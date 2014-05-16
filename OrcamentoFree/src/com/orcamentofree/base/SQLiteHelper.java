@@ -26,19 +26,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					+ " FOREIGN KEY(id_orcamento) REFERENCES orcamento(_id)); " };
 
 //	private String[] scriptSQLPopulaOrcamento = new String[] {
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('AZULEJO BANHEIRO','TAQI'       ,'10/05/2013 18:56','PAROBE');",
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('AZULEJO COZIHA'  ,'QUERO-QUERO','09/09/2013 19:00','TAQUARA');",
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('PISO SALA'       ,'COLOMBO'    ,'11/12/2013 21:06','APIRANGA');",
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('JANELA'          ,'MACOFER'    ,'08/05/2013 12:55','N. HAMBURGO');",
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('PS3'             ,'AMERICANAS' ,'06/06/2013 11:45','RJ');",
-//			"insert into orcamento (descricao, loja, data_hora,endereco) values('TV'              ,'SUBMARINO'  ,'01/01/2014 09:32','SP');", 
 //			
-//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD1' ,'AZULEJO CARRARA'  ,10, 12, 'SEM_FOTO',1,'UN');",
+//			"insert into orcamento (descricao, loja, data_hora,endereco) values('Portao'          ,'Macofer'    ,'10/05/2013 18:56','RS');",
+//			"insert into orcamento (descricao, loja, data_hora,endereco) values('Janelas'         ,'Quero'      ,'09/09/2013 19:00','Sapiranga');",
+//			"insert into orcamento (descricao, loja, data_hora,endereco) values('PS3'             ,'Taqi'       ,'11/12/2013 21:06','Taquara');",
+//			"insert into orcamento (descricao, loja, data_hora,endereco) values('Ajustes Portas'  ,'Columbia'   ,'08/02/2014 12:55','Parobe-RS');",
+//			"insert into orcamento (descricao, loja, data_hora,endereco) values('Reforma Banheiro','Quero Mais' ,'10/03/2014 11:45','Rua 1 maio NH');",
+//			
+//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD1' ,'AZULEJO CARRARA'  ,10, 12.50, 'SEM_FOTO',1,'UN');",
 //			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD2' ,'AZULEJO BOMDMAI'  ,12, 12, 'SEM_FOTO',1,'UN');",
 //			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD3' ,'CARRARA AZULEJO'  ,15, 15, 'SEM_FOTO',2,'UN');",
-//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD4' ,'ARGAMASSA BOMAA'  ,5,  9,  'SEM_FOTO',2,'UN');",
-//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD5' ,'REJUNTE ASDFGGG'  ,9,  3,  'SEM_FOTO',3,'UN');",
-//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD6' ,'FRESCURA DECOLO'  ,1,  3,  'SEM_FOTO',3,'UN');",
+//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD4' ,'ARGAMASSA BOMAA'  ,5,  9,  'SEM_FOTO',4,'UN');",
+//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD5' ,'REJUNTE ASDFGGG'  ,9,  3,  'SEM_FOTO',4,'UN');",
+//			"insert into produto (codigo, descricao, quantidade, preco, foto, id_orcamento , unidade_medida) values('COD6' ,' DECOLO'  ,1,  3,  'SEM_FOTO',5,'UN');",
 //	
 //	};
 
@@ -56,7 +56,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			Log.i(LOG, sql);
 			db.execSQL(sql);
 		}
-		Log.i(LOG, "populando TABLE ORCAMENTO");
+//		Log.i(LOG, "populando TABLE ORCAMENTO");
 //		int qtdeScriptsPopula = this.scriptSQLPopulaOrcamento.length;
 //
 //		for (int i = 0; i < qtdeScriptsPopula; i++) {

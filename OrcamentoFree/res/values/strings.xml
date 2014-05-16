@@ -17,6 +17,7 @@
     <string name="txt_orcamento_endereco">Endereço</string>
     <string name="txt_orcamento_loja">Loja</string>
     <string name="btn_produto_add">+ Produto</string>
+    <string name="btn_orcamento_export">Exportar Orçamentos</string>
     <string name="menu_save_orcamento">Salvar</string>
     <string name="menu_cancel_orcamento">Voltar</string>
     <string name="menu_delete_orcamento">Excluir</string>
@@ -25,7 +26,12 @@
     <string name="msg_orcamento_delete">Orcamento deletado !</string>
     <string name="msg_orcamento_not_selected">Selecione um orcamento !</string>
     <string name="msg_orcamento_cancel_operation">Ops..! Preencha os campos.</string>
+    <string name="msg_orcamento_export">   Lista Exportada! A lista de orçamentos foi salva no seu cartão de memória na pasta - LISTA DE ORÇAMENTOS</string>
+    <string name="msg_orcamento_export_error">Ops... Ocorreu um erro!</string>
+    <string name="msg_orcamento_export_sdcard_fail">Cartão de Memória não encontrado</string>
 
+    
+    
     <!-- PRODUTO -->
     <string name="txt_produto_descricao">Descrição</string>
     <string name="txt_produto_codigo">Código</string>
@@ -56,6 +62,7 @@
 
     <!-- Help -->
     <string name="msg_help_app_name">OrçamentoFree vem para ajudar quem faz pesquisa de preços e tem a necessidade de comparar  \nPREÇO X  QUALIDADE do produto pesquisado, pois tem a funcionalidade de vincular foto ao produto pesquisado.</string>
+    <string name="msg_help_btn_export_orcamento">Botão com a função de exportar todos os ORÇAMENTOS e seus PRODUTOS para arquivo PDF, \nficando salvo no cartão de memória na pasta LISTA DE ORÇAMENTOS</string>
     <string name="msg_help_btn_add_orcamento">Botão com a função de CRIAR um novo orçamento.</string>
     <string name="msg_help_btn_save">Botão com a função de SALVAR Orcamento ou Produto, conforme tela o usuario esteja utilizando.</string>
     <string name="msg_help_btn_delete">Botão com a função de DELETAR Orcamento ou Produto, conforme tela o usuario esteja utilizando.</string>

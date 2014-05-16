@@ -65,6 +65,34 @@
                 android:background="#FF909090" />
         </TableRow>
 
+         <TableRow>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:drawableTop="@drawable/ic_action_new_label"
+                android:text="@string/btn_orcamento_export"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                android:layout_weight="3"
+                android:text="@string/msg_help_btn_export_orcamento" />
+        </TableRow>
+
+        <TableRow>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#FF909090" />
+        </TableRow>
+        
         <TableRow>
 
             <Button
